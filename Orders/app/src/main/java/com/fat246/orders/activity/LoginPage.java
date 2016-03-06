@@ -357,7 +357,8 @@ public class LoginPage extends AppCompatActivity {
             new LogInParser(mNewUserInfo,URL_Str).checkLogIn();
 
             //登陆成功？
-            if (mNewUserInfo.operationValue!=LogInParser.ERROR_VALUE_WRONG_PASSWORD){
+            if (mNewUserInfo.operationValue!=LogInParser.ERROR_VALUE_WRONG_PASSWORD
+                    &&mNewUserInfo.operationValue!=LogInParser.ERROR_VALUE_NETWORK_INCOORRECT){
 
                 //保存登陆信息到  Preferences
                 saveInfo(mNewUserInfo);
