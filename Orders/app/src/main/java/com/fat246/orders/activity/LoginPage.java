@@ -31,7 +31,7 @@ import com.fat246.orders.parser.LogInParser;
 public class LoginPage extends AppCompatActivity {
 
     /**
-     * 登陆要用到的URL
+     * 登陆要用到的URL 这个要配合到  URL前缀一起使用
      */
     private static final String LOGIN_SERVER="isLogin";
     private String LOGIN_URL;
