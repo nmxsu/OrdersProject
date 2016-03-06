@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 进度条 -->
+    <ProgressBar
+        android:id="@+id/applys_more_info_progress_bar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_gravity="center"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/applys_more_info_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="invisible">
+        <TextView
+            android:id="@+id/applys_more_info_dep_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height"
+            android:layout_weight="1"
+            android:textSize="@dimen/item_title_size"
+            android:gravity="left"/>
+
+        <TextView
+            android:id="@+id/applys_more_info_psd_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height"
+            android:layout_weight="1"
+            android:textSize="@dimen/item_title_size"
+            android:gravity="left"/>
+
+        <TextView
+            android:id="@+id/applys_more_info_psr_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height"
+            android:layout_weight="1"
+            android:textSize="@dimen/item_title_size"
+            android:gravity="left"/>
+
+        <TextView
+            android:id="@+id/applys_more_info_create_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height"
+            android:layout_weight="1"
+            android:textSize="@dimen/item_title_size"
+            android:gravity="left"/>
+
+        <TextView
+            android:id="@+id/applys_more_info_modify_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height"
+            android:layout_weight="1"
+            android:textSize="@dimen/item_title_size"
+            android:gravity="left"/>
+
+        <TextView
+            android:id="@+id/applys_more_info_dry_auth_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height"
+            android:layout_weight="1"
+            android:textSize="@dimen/item_title_size"
+            android:gravity="left"/>
+    </LinearLayout>
+</FrameLayout>
