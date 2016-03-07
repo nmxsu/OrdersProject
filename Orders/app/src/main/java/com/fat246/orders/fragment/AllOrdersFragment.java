@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fat246.orders.R;
+import com.fat246.orders.activity.MainPage;
 import com.fat246.orders.activity.MoreInfo;
+import com.fat246.orders.application.MyApplication;
 import com.fat246.orders.bean.OrderInfo;
+import com.fat246.orders.bean.UserInfo;
+import com.fat246.orders.parser.AllOrdersListParser;
 import com.fat246.orders.widget.Ptr.PtrClassicFrameLayout;
 import com.fat246.orders.widget.Ptr.PtrDefaultHandler;
 import com.fat246.orders.widget.Ptr.PtrFrameLayout;
@@ -26,6 +31,12 @@ import java.util.List;
 
 public class AllOrdersFragment extends Fragment {
 
+    /**
+     * 登陆要用到的URL 这个要配合到  URL前缀一起使用
+     */
+    private static String ALLORDERSLIST_SERVER="getAllOrderList";
+    private  String ALLORDERSLIST_URL;
+
     //首先是下拉刷新
     private PtrClassicFrameLayout mPtrFrame;
 
@@ -35,6 +46,9 @@ public class AllOrdersFragment extends Fragment {
     //集合List
     private List<OrderInfo> mList = new ArrayList<>();
 
+    //用户信息
+    private UserInfo mUserInfo;
+
     public AllOrdersFragment() {}
 
     @Nullable
@@ -43,6 +57,12 @@ public class AllOrdersFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_all_orders, container, false);
 
+        //得到  URL
+        getSomeApplicationInfo();
+
+        //得到用户信息
+        mUserInfo=getUserInfo();
+
         //设置List
         setList(rootView);
 
@@ -50,6 +70,20 @@ public class AllOrdersFragment extends Fragment {
         setPtr(rootView);
 
         return rootView;
+    }
+
+    //获取用户信息
+    private UserInfo getUserInfo(){
+
+        return UserInfo.getData(getActivity());
+    }
+
+    //得到  用户登录时候要访问的的URL
+    public void getSomeApplicationInfo(){
+
+        //用URL 前缀 加上  要访问的服务构成  URL
+        MyApplication mApp=(MyApplication)getActivity().getApplication();
+        ALLORDERSLIST_URL=mApp.PRE_URL+"//"+AllOrdersFragment.ALLORDERSLIST_SERVER;
     }
 
     //设置List 以及其数据
@@ -64,7 +98,7 @@ public class AllOrdersFragment extends Fragment {
 
             @Override
             public Object getItem(int position) {
-                return mList.get(position);
+                return position;
             }
 
             @Override
@@ -75,7 +109,8 @@ public class AllOrdersFragment extends Fragment {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
 
-                if (convertView == null) {
+                //加了这个  就会 少加 很多 东西
+//                if (convertView == null) {
 
                     LayoutInflater mInflater = LayoutInflater.from(getActivity());
                     convertView = mInflater.inflate(R.layout.fragment_all_orders_item, null);
@@ -86,12 +121,14 @@ public class AllOrdersFragment extends Fragment {
                     TextView mID = (TextView) convertView.findViewById(R.id.all_orders_id);
 
                     OrderInfo mOI = mList.get(position);
+
+                    Log.e("id",mOI.getPRHSORD_ID());
                     mPRHSORD_ID.append(mOI.getPRHSORD_ID());
                     mNAMEE.append(mOI.getNAMEE());
                     mPRAC_NAME.append(mOI.getPRAC_NAME());
 
                     //不知道加不加ID
-                }
+//                }
 
                 return convertView;
             }
@@ -129,7 +166,7 @@ public class AllOrdersFragment extends Fragment {
             public void onRefreshBegin(PtrFrameLayout frame) {
 
                 //异步刷新加载数据
-                new AllOrdersAsyncTask(frame).execute();
+                new AllOrdersAsyncTask(frame,ALLORDERSLIST_URL).execute(mUserInfo);
             }
         });
 
@@ -149,35 +186,23 @@ public class AllOrdersFragment extends Fragment {
     }
 
     //异步加载所有 的 数据
-    private class AllOrdersAsyncTask extends AsyncTask<Void, Void, List<OrderInfo>> {
+    private class AllOrdersAsyncTask extends AsyncTask<UserInfo, Void, List<OrderInfo>> {
 
         private PtrFrameLayout frame;
 
-        public AllOrdersAsyncTask(PtrFrameLayout frame) {
+        private String URL_Str;
+
+        public AllOrdersAsyncTask(PtrFrameLayout frame,String URL_Str) {
 
             this.frame = frame;
+            this.URL_Str=URL_Str;
         }
 
         @Override
-        protected List<OrderInfo> doInBackground(Void... params) {
+        protected List<OrderInfo> doInBackground(UserInfo... params) {
 
-            return paserXml();
-        }
-
-        //下载并解析xml数据
-        public List<OrderInfo> paserXml() {
-
-            List<OrderInfo> list=new ArrayList<>();
-
-            //虚拟数据
-            for (int i=0; i<15; i++){
-
-                OrderInfo mOI=new OrderInfo("PO2015100500"+i," ","全部收货");
-
-                list.add(mOI);
-            }
-
-            return list;
+            //通过AllOrdersListParser 对象  解析 xml 数据
+            return new AllOrdersListParser(params[0],URL_Str).getAllOrdersList();
         }
 
         @Override
