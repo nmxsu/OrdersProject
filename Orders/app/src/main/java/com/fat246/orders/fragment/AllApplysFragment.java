@@ -15,7 +15,10 @@ import android.widget.TextView;
 
 import com.fat246.orders.R;
 import com.fat246.orders.activity.MoreInfo;
+import com.fat246.orders.application.MyApplication;
 import com.fat246.orders.bean.ApplyInfo;
+import com.fat246.orders.bean.UserInfo;
+import com.fat246.orders.parser.AllApplyListParser;
 import com.fat246.orders.widget.Ptr.PtrClassicFrameLayout;
 import com.fat246.orders.widget.Ptr.PtrDefaultHandler;
 import com.fat246.orders.widget.Ptr.PtrFrameLayout;
@@ -29,6 +32,12 @@ import java.util.List;
  */
 public class AllApplysFragment extends Fragment {
 
+    /**
+     * 登陆要用到的URL 这个要配合到  URL前缀一起使用
+     */
+    private static String ALLORDERSLIST_SERVER = "getAllApplyList";
+    private String ALLORDERSLIST_URL;
+
     //同样的  得有下拉刷新
     private PtrClassicFrameLayout mPtrFrame;
 
@@ -38,6 +47,8 @@ public class AllApplysFragment extends Fragment {
     //同样的  数据集合
     private List<ApplyInfo> mList = new ArrayList<>();
 
+    //用户数据
+    private UserInfo mUserInfo;
 
     public AllApplysFragment() {
     }
@@ -48,6 +59,12 @@ public class AllApplysFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_all_applys, container, false);
 
+        //得到用户信息
+        mUserInfo = getUserInfo();
+
+        //设置URL_Str 信息
+        getSomeApplicationInfo();
+
         //设置List
         setList(rootView);
 
@@ -55,6 +72,20 @@ public class AllApplysFragment extends Fragment {
         setPtr(rootView);
 
         return rootView;
+    }
+
+    //获取用户信息
+    private UserInfo getUserInfo() {
+
+        return UserInfo.getData(getActivity());
+    }
+
+    //得到  用户登录时候要访问的的URL
+    public void getSomeApplicationInfo() {
+
+        //用URL 前缀 加上  要访问的服务构成  URL
+        MyApplication mApp = (MyApplication) getActivity().getApplication();
+        ALLORDERSLIST_URL = mApp.PRE_URL + "//" + AllApplysFragment.ALLORDERSLIST_SERVER;
     }
 
     //设置一些
@@ -135,7 +166,7 @@ public class AllApplysFragment extends Fragment {
             public void onRefreshBegin(PtrFrameLayout frame) {
 
                 //异步刷新加载数据
-                new AllApplysAsyncTask(frame).execute();
+                new AllApplysAsyncTask(frame,ALLORDERSLIST_URL).execute(mUserInfo);
             }
         });
 
@@ -155,35 +186,25 @@ public class AllApplysFragment extends Fragment {
     }
 
     //异步 下载并解析数据
-    private class AllApplysAsyncTask extends AsyncTask<Void, Void, List<ApplyInfo>> {
+    private class AllApplysAsyncTask extends AsyncTask<UserInfo, Void, List<ApplyInfo>> {
 
         //ptr
         private PtrFrameLayout frame;
 
-        public AllApplysAsyncTask(PtrFrameLayout frame) {
+        //URL
+        private String URL_Str;
+
+        public AllApplysAsyncTask(PtrFrameLayout frame,String URL_Str) {
+
             this.frame = frame;
+            this.URL_Str=URL_Str;
         }
 
         @Override
-        protected List<ApplyInfo> doInBackground(Void... params) {
+        protected List<ApplyInfo> doInBackground(UserInfo... params) {
 
             //下载并解析
-            return paserXml();
-        }
-
-        //下载 并解析xml
-        public List<ApplyInfo> paserXml() {
-
-            //虚拟数据
-            List<ApplyInfo> list = new ArrayList<>();
-            for (int i = 0; i < 20; i++) {
-
-                ApplyInfo af = new ApplyInfo("PY2015100500" + i, "生产办", "全部采购", "维修");
-
-                list.add(af);
-            }
-
-            return list;
+            return new AllApplyListParser(params[0],URL_Str).getAllApplyList();
         }
 
         @Override
