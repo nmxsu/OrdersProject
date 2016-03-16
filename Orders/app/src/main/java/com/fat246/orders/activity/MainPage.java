@@ -1,5 +1,7 @@
 package com.fat246.orders.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -175,7 +177,23 @@ public class MainPage extends AppCompatActivity
             return;
         }
 
-        super.onBackPressed();
+        new AlertDialog.Builder(this)
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        MainPage.this.finish();
+                    }
+                })
+                .setTitle("是否确定要推出？")
+                .show();
     }
 
 
@@ -345,5 +363,8 @@ public class MainPage extends AppCompatActivity
             return 4;
         }
     }
+
+
+
 
 }
