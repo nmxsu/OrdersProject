@@ -1,6 +1,7 @@
 package com.fat246.orders.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.fat246.orders.R;
@@ -112,22 +115,22 @@ public class AllOrdersFragment extends Fragment {
                 //加了这个  就会 少加 很多 东西
 //                if (convertView == null) {
 
-                    LayoutInflater mInflater = LayoutInflater.from(getActivity());
-                    convertView = mInflater.inflate(R.layout.fragment_all_orders_item, null);
+                LayoutInflater mInflater = LayoutInflater.from(getActivity());
+                convertView = mInflater.inflate(R.layout.fragment_all_orders_item, null);
 
-                    TextView mPRHSORD_ID = (TextView) convertView.findViewById(R.id.all_orders_prhsord_id);
-                    TextView mNAMEE = (TextView) convertView.findViewById(R.id.all_orders_namee);
-                    TextView mPRAC_NAME = (TextView) convertView.findViewById(R.id.all_orders_prac_name);
-                    TextView mID = (TextView) convertView.findViewById(R.id.all_orders_id);
+                TextView mPRHSORD_ID = (TextView) convertView.findViewById(R.id.all_orders_prhsord_id);
+                TextView mNAMEE = (TextView) convertView.findViewById(R.id.all_orders_namee);
+                TextView mPRAC_NAME = (TextView) convertView.findViewById(R.id.all_orders_prac_name);
+                TextView mID = (TextView) convertView.findViewById(R.id.all_orders_id);
 
-                    OrderInfo mOI = mList.get(position);
+                OrderInfo mOI = mList.get(position);
 
-                    Log.e("id",mOI.getPRHSORD_ID());
-                    mPRHSORD_ID.append(mOI.getPRHSORD_ID());
-                    mNAMEE.append(mOI.getNAMEE());
-                    mPRAC_NAME.append(mOI.getPRAC_NAME());
+                Log.e("id", mOI.getPRHSORD_ID());
+                mPRHSORD_ID.append(mOI.getPRHSORD_ID());
+                mNAMEE.append(mOI.getNAMEE());
+                mPRAC_NAME.append(mOI.getPRAC_NAME());
 
-                    //不知道加不加ID
+                //不知道加不加ID
 //                }
 
                 return convertView;
@@ -150,6 +153,54 @@ public class AllOrdersFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        //设置 常按的点击事件
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                showPopupWindow(view);
+
+                return false;
+            }
+        });
+    }
+
+    private void showPopupWindow(View v){
+
+        //首先出事话内容
+        View contentView=LayoutInflater.from(getActivity())
+                .inflate(R.layout.popupwindow_all_orders,null);
+
+        //初始化两个按钮
+        Button delete=(Button)contentView.findViewById(R.id.popup_all_orders_delete);
+        Button add=(Button)contentView.findViewById(R.id.popup_all_orders_add);
+
+
+        //设置监听事件
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+            }
+        });
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        final PopupWindow mPop=new PopupWindow(contentView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,true);
+
+
+        mPop.setBackgroundDrawable(new BitmapDrawable());
+
+        mPop.setTouchable(true);
+        mPop.showAsDropDown(v);
     }
 
     //包装的下拉刷新

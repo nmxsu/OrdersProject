@@ -52,6 +52,7 @@ public class AllOrdersListParser {
 
         Log.e("param", param);
 
+
         try {
 
             URL url = new URL(URL_Str);
@@ -91,6 +92,9 @@ public class AllOrdersListParser {
         }
 
         Log.e("length", mOrdersList.size() + "");
+
+        //添加一点 车市数据
+        mOrdersList.add(new OrderInfo("id","dd","na"));
 
         return mOrdersList;
     }

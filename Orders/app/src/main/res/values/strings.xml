@@ -57,4 +57,6 @@
     <string name="main_menu_search_name">搜索</string>
     <string name="main_menu_search_hint">订单/申请单</string>
 
+    <string name="popup_all_orders_delete">删除</string>
+    <string name="popup_all_orders_add">添加</string>
 </resources>
