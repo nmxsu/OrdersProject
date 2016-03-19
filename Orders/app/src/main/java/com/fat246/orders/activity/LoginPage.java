@@ -46,7 +46,6 @@ public class LoginPage extends AppCompatActivity {
     private CheckBox mAutoLogIn;
     private TextView mForgotPassword;
     private TextView mNewUser;
-    private Button mComeToMainPage;
 
     //异步线程
     private UserLogInTask mAuthTask = null;
@@ -134,7 +133,6 @@ public class LoginPage extends AppCompatActivity {
         mAutoLogIn=(CheckBox)findViewById(R.id.auto_login);
         mForgotPassword=(TextView)findViewById(R.id.action_forgot_password);
         mNewUser=(TextView)findViewById(R.id.action_new_user);
-        mComeToMainPage=(Button)findViewById(R.id.come_to_main_page_directly);
     }
 
     //监听
@@ -209,21 +207,6 @@ public class LoginPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-            }
-        });
-
-        //直接进入主界面
-        mComeToMainPage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent mIntent=new Intent(LoginPage.this,MainPage.class);
-
-                UserInfo.setData(mIntent);
-
-                startActivity(mIntent);
-
-                LoginPage.this.finish();
             }
         });
     }
