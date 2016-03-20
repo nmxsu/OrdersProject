@@ -1,6 +1,7 @@
 package com.fat246.orders.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +15,7 @@ import com.fat246.orders.R;
 import com.fat246.orders.bean.UserInfo;
 import com.fat246.orders.fragment.FirstLoadingPageFragment;
 import com.fat246.orders.fragment.LoadingPageFragment;
+import com.fat246.orders.services.MyService;
 
 public class LoadingPage extends AppCompatActivity {
 
@@ -34,10 +36,20 @@ public class LoadingPage extends AppCompatActivity {
             }
         }
 
+        startService();
+
         //判断是否是第一次登陆
         isFirstLoading=isFirstLoad();
 
         toAddFragment();
+    }
+
+    //启动服务
+    private void startService(){
+
+        Intent mIntent=new Intent(LoadingPage.this, MyService.class);
+
+        startService(mIntent);
     }
 
     //添加Fragment

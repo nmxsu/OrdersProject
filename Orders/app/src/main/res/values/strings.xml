@@ -59,4 +59,6 @@
 
     <string name="popup_all_orders_delete">删除</string>
     <string name="popup_all_orders_add">添加</string>
+
+    <string name="service_float_larger_title">基本情况</string>
 </resources>
