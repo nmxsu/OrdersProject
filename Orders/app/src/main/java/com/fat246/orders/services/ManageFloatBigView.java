@@ -10,7 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.fat246.orders.R;
@@ -22,15 +21,13 @@ public class ManageFloatBigView {
 
     private static ManageFloatBigView mManageFloatBigView;
 
+    public static boolean isShowing=false;
+
     public static ManageFloatBigView getManageFloatBigView(Context context) {
 
         if (mManageFloatBigView == null) {
 
             mManageFloatBigView = new ManageFloatBigView(context);
-        }else {
-
-            mManageFloatBigView.mWindowManager.addView(mManageFloatBigView.rootView,
-                    mManageFloatBigView.mParams);
         }
 
         return mManageFloatBigView;
@@ -82,8 +79,6 @@ public class ManageFloatBigView {
 
         mParams.x = screenWidth/2-mParams.width/2;
         mParams.y = screenHeight/2-mParams.height/2;
-
-        mWindowManager.addView(rootView, mParams);
     }
 
     private void getScreen(){
@@ -105,7 +100,10 @@ public class ManageFloatBigView {
             public void onClick(View v) {
 
                 mWindowManager.removeViewImmediate(rootView);
-                ManageFloatSmallView.getManageFloatSmallView(mContext);
+
+                isShowing=false;
+                ManageFloatSmallView.getManageFloatSmallView(mContext).addView();
+
             }
         });
 
@@ -124,5 +122,16 @@ public class ManageFloatBigView {
                 return false;
             }
         });
+    }
+
+    public void removeView(){
+
+        mWindowManager.removeViewImmediate(rootView);
+        isShowing=false;
+    }
+
+    public void addView(){
+        mWindowManager.addView(rootView,mParams);
+        isShowing=true;
     }
 }

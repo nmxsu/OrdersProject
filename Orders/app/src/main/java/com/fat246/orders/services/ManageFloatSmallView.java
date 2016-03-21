@@ -1,6 +1,8 @@
 package com.fat246.orders.services;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -11,6 +13,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.fat246.orders.R;
+import com.fat246.orders.activity.LoadingPage;
+import com.fat246.orders.bean.UserInfo;
 
 /**
  * Created by Administrator on 2016/3/20.
@@ -26,18 +30,20 @@ public class ManageFloatSmallView {
     private int screenWidth;
     private int screenHeight;
 
+    public static boolean isShowing = false;
+
+    public static boolean isHide=false;
+
 
     private View rootView;
+
+    private UserInfo mUserInfo;
 
     public static ManageFloatSmallView getManageFloatSmallView(Context context) {
 
         if (mManageFloatSmallView == null) {
 
             mManageFloatSmallView = new ManageFloatSmallView(context);
-        }else {
-
-            mManageFloatSmallView.mWindowManager.addView(mManageFloatSmallView.rootView,
-                    mManageFloatSmallView.mParams);
         }
 
         return mManageFloatSmallView;
@@ -71,21 +77,19 @@ public class ManageFloatSmallView {
         getScreen();
 
         mParams.x = screenWidth;
-        mParams.y = screenHeight/3;
+        mParams.y = screenHeight / 3;
 
         setListener(rootView);
-
-        mWindowManager.addView(rootView, mParams);
     }
 
-    private void getScreen(){
+    private void getScreen() {
 
-        DisplayMetrics dm=new DisplayMetrics();
+        DisplayMetrics dm = new DisplayMetrics();
 
         mWindowManager.getDefaultDisplay().getMetrics(dm);
 
-        screenWidth=dm.widthPixels;
-        screenHeight=dm.heightPixels;
+        screenWidth = dm.widthPixels;
+        screenHeight = dm.heightPixels;
     }
 
     //设置监听事件
@@ -113,10 +117,61 @@ public class ManageFloatSmallView {
             @Override
             public void onClick(View v) {
 
-                mWindowManager.removeViewImmediate(rootView);
+                if (isHide){
 
-                ManageFloatBigView.getManageFloatBigView(mContext);
+                    showView();
+
+                }else {
+                    mUserInfo = getUserInfo();
+
+                    if (mUserInfo.getisAutoLogIn()) {
+
+                        ManageFloatBigView.getManageFloatBigView(mContext).addView();
+
+                    } else {
+
+                        Intent mIntent = new Intent(mContext, LoadingPage.class);
+
+
+                        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        mContext.startActivity(mIntent);
+                    }
+                    mWindowManager.removeViewImmediate(rootView);
+                    isShowing = false;
+                }
             }
         });
+
+    }
+
+    public UserInfo getUserInfo() {
+
+        //首先得到SharedPreferences
+        SharedPreferences mSP = mContext
+                .getSharedPreferences(UserInfo.login_info_key, Context.MODE_PRIVATE);
+
+        //读取UserInfo信息
+        return new UserInfo(
+                mSP.getString("mUser", ""),
+                mSP.getString("mPassword", ""),
+                mSP.getBoolean("isSavePassword", false),
+                mSP.getBoolean("isAutoLogIn", false)
+        );
+    }
+
+    public void removeView() {
+
+        mWindowManager.removeViewImmediate(rootView);
+        isShowing = false;
+    }
+
+    public void addView() {
+        mWindowManager.addView(rootView, mParams);
+        isShowing = true;
+    }
+
+    private void showView(){
+
     }
 }
