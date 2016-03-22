@@ -39,8 +39,7 @@ public class LoadingPageFragment extends Fragment {
     /**
      * 登陆要用到的URL
      */
-    private static final String LOGIN_SERVER = "isLogin";
-    private String LOGIN_URL;
+    private static String LOGIN_URL;
 
     //开始界面的图片
     private ImageView mImageView;
@@ -57,7 +56,8 @@ public class LoadingPageFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_loading_page, container, false);
 
-        getSomeApplicationInfo();
+        //得到登陆需要访问的网络地址
+        LOGIN_URL=MyApplication.getLoginUrl();
 
         setView(rootView);
 
@@ -90,14 +90,6 @@ public class LoadingPageFragment extends Fragment {
     private void hintUser(String msg) {
 
         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-    //得到  用户登录时候要访问的的URL
-    public void getSomeApplicationInfo() {
-
-        //用URL 前缀 加上  要访问的服务构成  URL
-        MyApplication mApp = (MyApplication) getActivity().getApplication();
-        LOGIN_URL = mApp.PRE_URL + "//" + LOGIN_SERVER;
     }
 
     //找到一些 控件
@@ -235,7 +227,8 @@ public class LoadingPageFragment extends Fragment {
                 mIntent = new Intent(getActivity(), LoginPage.class);
             }
 
-            UserInfo.setData(mIntent, userInfo);
+            //改从配置文件里面获取信息过后就不需要这个了
+//            UserInfo.setData(mIntent, userInfo);
 
             startActivity(mIntent);
 

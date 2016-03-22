@@ -32,10 +32,7 @@ import java.util.List;
  */
 public class AllApplysFragment extends Fragment {
 
-    /**
-     * 登陆要用到的URL 这个要配合到  URL前缀一起使用
-     */
-    private static String ALLORDERSLIST_SERVER = "getAllApplyList";
+    //申请单地址
     private String ALLORDERSLIST_URL;
 
     //同样的  得有下拉刷新
@@ -62,8 +59,8 @@ public class AllApplysFragment extends Fragment {
         //得到用户信息
         mUserInfo = getUserInfo();
 
-        //设置URL_Str 信息
-        getSomeApplicationInfo();
+        //得到申请单的网络地址
+        ALLORDERSLIST_URL=MyApplication.getAllapplyslistUrl();
 
         //设置List
         setList(rootView);
@@ -78,14 +75,6 @@ public class AllApplysFragment extends Fragment {
     private UserInfo getUserInfo() {
 
         return UserInfo.getData(getActivity());
-    }
-
-    //得到  用户登录时候要访问的的URL
-    public void getSomeApplicationInfo() {
-
-        //用URL 前缀 加上  要访问的服务构成  URL
-        MyApplication mApp = (MyApplication) getActivity().getApplication();
-        ALLORDERSLIST_URL = mApp.PRE_URL + "//" + AllApplysFragment.ALLORDERSLIST_SERVER;
     }
 
     //设置一些

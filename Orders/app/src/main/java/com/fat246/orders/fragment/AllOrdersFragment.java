@@ -34,11 +34,8 @@ import java.util.List;
 
 public class AllOrdersFragment extends Fragment {
 
-    /**
-     * 登陆要用到的URL 这个要配合到  URL前缀一起使用
-     */
-    private static String ALLORDERSLIST_SERVER="getAllOrderList";
-    private  String ALLORDERSLIST_URL;
+    //订单的地址
+    private String ALLORDERSLIST_URL;
 
     //首先是下拉刷新
     private PtrClassicFrameLayout mPtrFrame;
@@ -60,8 +57,8 @@ public class AllOrdersFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_all_orders, container, false);
 
-        //得到  URL
-        getSomeApplicationInfo();
+        //得到订单的网络地址
+        this.ALLORDERSLIST_URL=MyApplication.getAllorderslistUrl();
 
         //得到用户信息
         mUserInfo=getUserInfo();
@@ -79,14 +76,6 @@ public class AllOrdersFragment extends Fragment {
     private UserInfo getUserInfo(){
 
         return UserInfo.getData(getActivity());
-    }
-
-    //得到  用户登录时候要访问的的URL
-    public void getSomeApplicationInfo(){
-
-        //用URL 前缀 加上  要访问的服务构成  URL
-        MyApplication mApp=(MyApplication)getActivity().getApplication();
-        ALLORDERSLIST_URL=mApp.PRE_URL+"//"+AllOrdersFragment.ALLORDERSLIST_SERVER;
     }
 
     //设置List 以及其数据

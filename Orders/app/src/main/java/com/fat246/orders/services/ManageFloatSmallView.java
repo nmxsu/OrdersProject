@@ -14,7 +14,9 @@ import android.widget.ImageView;
 
 import com.fat246.orders.R;
 import com.fat246.orders.activity.LoadingPage;
+import com.fat246.orders.activity.LoginPage;
 import com.fat246.orders.bean.UserInfo;
+import com.fat246.orders.parser.LogInParser;
 
 /**
  * Created by Administrator on 2016/3/20.
@@ -124,21 +126,21 @@ public class ManageFloatSmallView {
                 }else {
                     mUserInfo = getUserInfo();
 
-                    if (mUserInfo.getisAutoLogIn()) {
+                    if (mUserInfo.operationValue!= LogInParser.ERROR_VALUE_WRONG_PASSWORD
+                            && mUserInfo.operationValue!=LogInParser.ERROR_VALUE_NETWORK_INCOORRECT) {
 
+                        ManageFloatSmallView.getManageFloatSmallView(mContext).removeView();
                         ManageFloatBigView.getManageFloatBigView(mContext).addView();
 
                     } else {
 
-                        Intent mIntent = new Intent(mContext, LoadingPage.class);
+                        Intent mIntent = new Intent(mContext, LoginPage.class);
 
 
                         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                         mContext.startActivity(mIntent);
                     }
-                    mWindowManager.removeViewImmediate(rootView);
-                    isShowing = false;
                 }
             }
         });
@@ -156,7 +158,8 @@ public class ManageFloatSmallView {
                 mSP.getString("mUser", ""),
                 mSP.getString("mPassword", ""),
                 mSP.getBoolean("isSavePassword", false),
-                mSP.getBoolean("isAutoLogIn", false)
+                mSP.getBoolean("isAutoLogIn", false),
+                mSP.getInt("operationValue",99)
         );
     }
 

@@ -33,7 +33,6 @@ public class LoginPage extends AppCompatActivity {
     /**
      * 登陆要用到的URL 这个要配合到  URL前缀一起使用
      */
-    private static final String LOGIN_SERVER="isLogin";
     private String LOGIN_URL;
 
     //View
@@ -61,7 +60,8 @@ public class LoginPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
 
-        getSomeApplicationInfo();
+        //得到登陆的网络地址
+        LOGIN_URL=MyApplication.getLoginUrl();
 
         setView();
 
@@ -88,19 +88,11 @@ public class LoginPage extends AppCompatActivity {
         return (networkInfo!=null&&networkInfo.isConnected());
     }
 
-    //得到  用户登录时候要访问的的URL
-    public void getSomeApplicationInfo(){
-
-        //用URL 前缀 加上  要访问的服务构成  URL
-        MyApplication mApp=(MyApplication)getApplication();
-        LOGIN_URL=mApp.PRE_URL+"//"+LOGIN_SERVER;
-    }
-
     //加载信息
     private void setInfo(){
 
         //从Intent中得到用户信息
-        mUserInfo=UserInfo.getData(this);
+        mUserInfo=getUserInfo();
 
         //设置信息
         mUser.setText(mUserInfo.getmUser());
@@ -119,6 +111,21 @@ public class LoginPage extends AppCompatActivity {
         if (mUserInfo.getisAutoLogIn()){
             mAutoLogIn.setChecked(true);
         }
+    }
+
+    public UserInfo getUserInfo() {
+
+        //首先得到SharedPreferences
+        SharedPreferences mSP = this
+                .getSharedPreferences(UserInfo.login_info_key, Context.MODE_PRIVATE);
+
+        //读取UserInfo信息
+        return new UserInfo(
+                mSP.getString("mUser", ""),
+                mSP.getString("mPassword", ""),
+                mSP.getBoolean("isSavePassword", false),
+                mSP.getBoolean("isAutoLogIn", false)
+        );
     }
 
     //控件
@@ -351,6 +358,7 @@ public class LoginPage extends AppCompatActivity {
             return mNewUserInfo;
         }
 
+        //将登陆成功后的数据写到配置文件
         private void saveInfo(UserInfo mNewUserInfo){
 
             //首先将用户名加入到自动补全数据库
@@ -363,6 +371,7 @@ public class LoginPage extends AppCompatActivity {
             editor.putString("mPassword",mNewUserInfo.getmPassword());
             editor.putBoolean("isSavePassword", mNewUserInfo.getisSavePassword());
             editor.putBoolean("isAutoLogIn",mNewUserInfo.getisAutoLogIn());
+            editor.putInt("operationValue", mNewUserInfo.operationValue);
 
             //记住一定要提交
             editor.commit();

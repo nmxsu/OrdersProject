@@ -118,7 +118,6 @@ public class MyService extends Service {
             mList.add(i.activityInfo.packageName);
 
         }
-
         return mList;
     }
 }

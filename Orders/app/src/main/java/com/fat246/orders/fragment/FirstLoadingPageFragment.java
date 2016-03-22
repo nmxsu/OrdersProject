@@ -83,7 +83,8 @@ public class FirstLoadingPageFragment extends Fragment {
 
                 Intent mIntent=new Intent(getActivity(),LoginPage.class);
 
-                UserInfo.setData(mIntent);
+                //改为从配置文件里面获取过后就不需要传入配置文件了
+//                UserInfo.setData(mIntent);
 
                 startActivity(mIntent);
 

@@ -16,7 +16,7 @@ public class UserInfo {
     private boolean isAutoLogIn;
 
     //记录用户的权限
-    public int operationValue;
+    public int operationValue=0;
 
     //特定的构造函数
     public UserInfo(String mUser,String mPassword,boolean isSavePassword,boolean isAutoLogIn){
