@@ -150,7 +150,8 @@ public class AllOrdersFragment extends Fragment {
 
                 showPopupWindow(view);
 
-                return false;
+                //不响应  点击事件
+                return true;
             }
         });
     }

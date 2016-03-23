@@ -8,7 +8,7 @@ import android.app.Application;
 public class MyApplication extends Application {
 
     /**
-     * 表示  主机的地址的全局变量
+     * 表示  服务器的地址的全局变量
      */
     private static final String SERVER_IP="192.168.56.1";
     private static final String SERVER_PORT="8080";

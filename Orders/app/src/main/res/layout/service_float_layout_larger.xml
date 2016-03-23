@@ -18,6 +18,7 @@
                 android:id="@+id/service_float_big_button_home"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:scaleType="centerInside"
                 android:background="@color/colorPrimary"
                 android:src="@drawable/ic_menu_home" />
 
@@ -46,7 +47,8 @@
             <ListView
                 android:id="@+id/service_float_big_button_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:background="@color/white">
 
             </ListView>
         </RelativeLayout>
@@ -63,16 +65,10 @@
                 android:text="设置" />
 
             <Button
-                android:id="@+id/service_float_big_button_orders"
+                android:id="@+id/service_float_big_button_orders_applys"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="订单" />
-
-            <Button
-                android:id="@+id/service_float_big_button_applys"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="申请单" />
 
             <Button
                 android:id="@+id/service_float_big_button_reflash"

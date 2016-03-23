@@ -40,24 +40,22 @@ public class AllOrdersListParser {
         //保存中网页服务上面加载下来的  xml数据
         List<OrderInfo> mOrdersList = sendGetAllOrdersListPost("autId=" + mUserInfo.getmUser());
 
-
         return mOrdersList;
     }
 
     //发送  post 请求
     private List<OrderInfo> sendGetAllOrdersListPost(String param) {
 
+        Log.e("List",param);
+
         PrintWriter out = null;
         List<OrderInfo> mOrdersList;
-
-        Log.e("param", param);
-
 
         try {
 
             URL url = new URL(URL_Str);
 
-            Log.e("URL", "++==" + url);
+            Log.e("url====>>>>",URL_Str);
 
             //打开和URL之间的链接
             URLConnection conn = url.openConnection();
@@ -87,11 +85,11 @@ public class AllOrdersListParser {
             mOrdersList = parse(is);
 
         } catch (Exception e) {
-            //Log.e("misstake",""+e.getMessage());
+
+            e.printStackTrace();
+            Log.e("misstake",""+e.getMessage());
             mOrdersList = new ArrayList<>();
         }
-
-        Log.e("length", mOrdersList.size() + "");
 
         //添加一点 车市数据
         mOrdersList.add(new OrderInfo("id","dd","na"));
@@ -130,7 +128,6 @@ public class AllOrdersListParser {
 
                             eventType = parser.next();
                             String str = parser.getText();
-                            Log.e("here","comes---"+str);
                             switch (i % 3) {
 
                                 case 0:
@@ -148,7 +145,6 @@ public class AllOrdersListParser {
 
                                     if (PRAC_NAME==null) PRAC_NAME="";
                                     //添加到  mOrdersList
-                                    Log.e("++add", "add to list");
                                     mOrdersList.add(new OrderInfo(PRHSORD_ID, NAMEE, PRAC_NAME));
                                     break;
                             }
