@@ -3,7 +3,7 @@
     android:orientation="horizontal"
     android:layout_width="160dp"
     android:layout_height="wrap_content"
-    android:background="@drawable/popup_inline_error">
+    >
 
     <Button
         android:id="@+id/popup_all_orders_delete"

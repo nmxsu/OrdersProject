@@ -2,11 +2,13 @@ package com.fat246.orders.fragment;
 
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -184,13 +186,16 @@ public class AllOrdersFragment extends Fragment {
         });
 
         final PopupWindow mPop=new PopupWindow(contentView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,true);
+                ViewGroup.LayoutParams.WRAP_CONTENT,200,true);
 
 
-        mPop.setBackgroundDrawable(new BitmapDrawable());
+        mPop.setBackgroundDrawable(new ColorDrawable(4));
 
         mPop.setTouchable(true);
         mPop.showAsDropDown(v);
+
+        mPop.showAtLocation(v, Gravity.TOP,0,0);
+
     }
 
     //包装的下拉刷新
