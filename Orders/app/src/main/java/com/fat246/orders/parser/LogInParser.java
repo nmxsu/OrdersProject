@@ -38,8 +38,13 @@ public class LogInParser {
     //判断用户是否能够登陆
     public void checkLogIn(){
 
-        mUserInfo.operationValue=sendLogInPost("loginName="+mUserInfo.getmUser()+"&"+
-                "pwd="+mUserInfo.getmPassword());
+        //测试用
+        mUserInfo.operationValue=3;
+
+//        mUserInfo.operationValue=sendLogInPost("loginName="+mUserInfo.getmUser()+"&"+
+//                "pwd="+mUserInfo.getmPassword());
+
+
     }
 
     private int sendLogInPost(String param){

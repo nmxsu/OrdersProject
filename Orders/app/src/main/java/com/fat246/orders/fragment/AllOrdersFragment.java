@@ -1,9 +1,10 @@
 package com.fat246.orders.fragment;
 
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,7 +21,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.fat246.orders.R;
-import com.fat246.orders.activity.MainPage;
 import com.fat246.orders.activity.MoreInfo;
 import com.fat246.orders.application.MyApplication;
 import com.fat246.orders.bean.OrderInfo;
@@ -162,40 +162,63 @@ public class AllOrdersFragment extends Fragment {
 
         //首先出事话内容
         View contentView=LayoutInflater.from(getActivity())
-                .inflate(R.layout.popupwindow_all_orders,null);
-
-        //初始化两个按钮
-        Button delete=(Button)contentView.findViewById(R.id.popup_all_orders_delete);
-        Button add=(Button)contentView.findViewById(R.id.popup_all_orders_add);
-
-
-        //设置监听事件
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-            }
-        });
-
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+                .inflate(R.layout.popupwindow_layout,null);
 
         final PopupWindow mPop=new PopupWindow(contentView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,200,true);
+                ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,true);
 
+        //设置监听事件
+        setLisenler(contentView);
 
-        mPop.setBackgroundDrawable(new ColorDrawable(4));
+        mPop.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
 
         mPop.setTouchable(true);
-        mPop.showAsDropDown(v);
 
-        mPop.showAtLocation(v, Gravity.TOP,0,0);
+        //为了使其显示在上方
 
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            mPop.showAsDropDown(v,25,-v.getHeight(),Gravity.CENTER);
+        }else {
+            mPop.showAsDropDown(v,25,-v.getHeight());
+        }
+    }
+
+    //设置popupwindow　的监听事件
+    private void setLisenler(View contentView){
+
+        //四个按钮
+        Button standInfo=(Button)contentView.findViewById(R.id.popupwindow_stand_info);
+        Button timeInfo=(Button)contentView.findViewById(R.id.popupwindow_time_info);
+        Button progressInfo=(Button)contentView.findViewById(R.id.popupwindow_progress_info);
+        Button slectionState=(Button)contentView.findViewById(R.id.popupwindow_slection_state);
+
+        standInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        timeInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        progressInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        slectionState.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     //包装的下拉刷新
