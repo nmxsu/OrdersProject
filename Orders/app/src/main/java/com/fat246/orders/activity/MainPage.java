@@ -3,19 +3,19 @@ package com.fat246.orders.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,13 +28,13 @@ import com.fat246.orders.fragment.MineOrdersFragment;
 import com.fat246.orders.widget.ChangeTabWithColorView;
 
 public class MainPage extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener , View.OnClickListener{
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
     //View
-    private ChangeTabWithColorView[] mAction=new ChangeTabWithColorView[4];
+    private ChangeTabWithColorView[] mAction = new ChangeTabWithColorView[4];
 
 
     //用户用户信息
@@ -57,16 +57,16 @@ public class MainPage extends AppCompatActivity
         setContentView(R.layout.activity_main_page);
 
         //拿到用户登录信息   或者恢复数据
-        if (savedInstanceState!=null){
+        if (savedInstanceState != null) {
 
-            mUserInfo=UserInfo.getData(savedInstanceState);
-            int whichTab=savedInstanceState.getInt("whichTab",0);
+            mUserInfo = UserInfo.getData(savedInstanceState);
+            int whichTab = savedInstanceState.getInt("whichTab", 0);
 
             mViewPager.setCurrentItem(whichTab);
 
-        }else {
+        } else {
 
-            mUserInfo=UserInfo.getData(this);
+            mUserInfo = UserInfo.getData(this);
         }
 
         setView();
@@ -86,29 +86,29 @@ public class MainPage extends AppCompatActivity
         mUserInfo.getBundle(outState);
 
         //Activity 数据
-        outState.putInt("whichTab",mViewPager.getCurrentItem());
+        outState.putInt("whichTab", mViewPager.getCurrentItem());
 
     }
 
     //setView
-    private void setView(){
+    private void setView() {
 
-        mAction[0]=(ChangeTabWithColorView)findViewById(R.id.action_all_orders);
-        mAction[1]=(ChangeTabWithColorView)findViewById(R.id.action_all_applys);
-        mAction[2]=(ChangeTabWithColorView)findViewById(R.id.action_mine_orders);
-        mAction[3]=(ChangeTabWithColorView)findViewById(R.id.action_mine_applys);
+        mAction[0] = (ChangeTabWithColorView) findViewById(R.id.action_all_orders);
+        mAction[1] = (ChangeTabWithColorView) findViewById(R.id.action_all_applys);
+        mAction[2] = (ChangeTabWithColorView) findViewById(R.id.action_mine_orders);
+        mAction[3] = (ChangeTabWithColorView) findViewById(R.id.action_mine_applys);
         //toolbar = (Toolbar) findViewById(R.id.toolbar);
         mViewPager = (ViewPager) findViewById(R.id.container);
-        mDrawerLayou=(DrawerLayout) findViewById(R.id.drawer_layout);
-        mToolBar= (Toolbar) findViewById(R.id.toolbar);
-        nav_view=(NavigationView)findViewById(R.id.nav_view);
+        mDrawerLayou = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mToolBar = (Toolbar) findViewById(R.id.toolbar);
+        nav_view = (NavigationView) findViewById(R.id.nav_view);
     }
 
     //设置点击监听事件
-    private void setListenler(){
+    private void setListenler() {
 
-        for (ChangeTabWithColorView i:mAction
-             ) {
+        for (ChangeTabWithColorView i : mAction
+                ) {
             i.setOnClickListener(this);
         }
 
@@ -197,7 +197,6 @@ public class MainPage extends AppCompatActivity
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -214,7 +213,7 @@ public class MainPage extends AppCompatActivity
         int id = item.getItemId();
 
         //判断点击的是哪一个
-        switch (id){
+        switch (id) {
 
             case R.id.action_settings:
                 doSetting();
@@ -228,8 +227,8 @@ public class MainPage extends AppCompatActivity
     }
 
     //索搜
-    public void doMainSearch(){
-        Toast.makeText(this,"墨迹墨迹。。。",Toast.LENGTH_SHORT).show();
+    public void doMainSearch() {
+        Toast.makeText(this, "墨迹墨迹。。。", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -240,7 +239,7 @@ public class MainPage extends AppCompatActivity
         //得到点击的那个  Item的 id
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
 
             case R.id.nav_setting:
 
@@ -266,28 +265,28 @@ public class MainPage extends AppCompatActivity
     }
 
     //点击了  drawer 设置事件
-    public void doSetting(){
-        Toast.makeText(this,"墨迹墨迹。。。",Toast.LENGTH_SHORT).show();
+    public void doSetting() {
+        Toast.makeText(this, "墨迹墨迹。。。", Toast.LENGTH_SHORT).show();
 
     }
 
     //点击了 drawer 分享事件
-    public void doShare(){
-        Toast.makeText(this,"墨迹墨迹。。。",Toast.LENGTH_SHORT).show();
+    public void doShare() {
+        Toast.makeText(this, "墨迹墨迹。。。", Toast.LENGTH_SHORT).show();
 
     }
 
     //点击了  drawer 发送事件
-    public void doSend(){
-        Toast.makeText(this,"墨迹墨迹。。。",Toast.LENGTH_SHORT).show();
+    public void doSend() {
+        Toast.makeText(this, "墨迹墨迹。。。", Toast.LENGTH_SHORT).show();
 
     }
 
     //重置其他Tab
-    private void setIndex(){
+    private void setIndex() {
 
-        for (ChangeTabWithColorView i:mAction
-             ) {
+        for (ChangeTabWithColorView i : mAction
+                ) {
             i.setIconAlpha(0);
         }
     }
@@ -298,23 +297,23 @@ public class MainPage extends AppCompatActivity
         //首先重置其他Tab
         setIndex();
 
-        switch (v.getId()){
+        switch (v.getId()) {
 
             case R.id.action_all_orders:
                 mAction[0].setIconAlpha(1.0f);
-                mViewPager.setCurrentItem(0,false);
+                mViewPager.setCurrentItem(0, false);
                 break;
             case R.id.action_all_applys:
                 mAction[1].setIconAlpha(1.0f);
-                mViewPager.setCurrentItem(1,false);
+                mViewPager.setCurrentItem(1, false);
                 break;
             case R.id.action_mine_orders:
                 mAction[2].setIconAlpha(1.0f);
-                mViewPager.setCurrentItem(2,false);
+                mViewPager.setCurrentItem(2, false);
                 break;
             case R.id.action_mine_applys:
                 mAction[3].setIconAlpha(1.0f);
-                mViewPager.setCurrentItem(3,false);
+                mViewPager.setCurrentItem(3, false);
                 break;
         }
 
@@ -330,25 +329,25 @@ public class MainPage extends AppCompatActivity
         @Override
         public Fragment getItem(int position) {
 
-            Fragment rootFragment=null;
+            Fragment rootFragment = null;
 
-            switch (position){
+            switch (position) {
 
                 case 0:
-                    rootFragment=new AllOrdersFragment();
+                    rootFragment = new AllOrdersFragment();
                     break;
                 case 1:
-                    rootFragment=new AllApplysFragment();
+                    rootFragment = new AllApplysFragment();
                     break;
                 case 2:
-                    rootFragment=new MineOrdersFragment();
+                    rootFragment = new MineOrdersFragment();
                     break;
                 case 3:
-                    rootFragment=new MineApplysFragment();
+                    rootFragment = new MineApplysFragment();
                     break;
 
                 default:
-                    rootFragment=new AllOrdersFragment();
+                    rootFragment = new AllOrdersFragment();
                     break;
             }
 
@@ -363,8 +362,6 @@ public class MainPage extends AppCompatActivity
             return 4;
         }
     }
-
-
 
 
 }

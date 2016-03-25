@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.fat246.orders.R;
-import com.fat246.orders.activity.LoadingPage;
 import com.fat246.orders.activity.LoginPage;
 import com.fat246.orders.activity.MainPage;
 import com.fat246.orders.application.MyApplication;
@@ -31,39 +30,24 @@ import com.fat246.orders.parser.LogInParser;
 
 import java.util.List;
 
-/**
- * Created by Administrator on 2016/3/6.
- */
 public class LoadingPageFragment extends Fragment {
-
-    /**
-     * 登陆要用到的URL
-     */
-    private static String LOGIN_URL;
 
     //开始界面的图片
     private ImageView mImageView;
 
-    //判断是否有网络连接
-    private boolean isConnected;
-
     //动画的持续时间
-    private static long Anim_Duration = 1000;
+    private static final long Anim_Duration = 1000;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        //inflate View
         View rootView = inflater.inflate(R.layout.fragment_loading_page, container, false);
-
-        //得到登陆需要访问的网络地址
-        LOGIN_URL=MyApplication.getLoginUrl();
 
         setView(rootView);
 
-        isConnected = isOnline();
-
-        if (!isConnected) hintUser("亲，没有网络哦。。。");
+        if (!isOnline()) hintUser("亲，没有网络哦。。。");
 
         setListenler();
 
@@ -105,7 +89,7 @@ public class LoadingPageFragment extends Fragment {
 
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-        return (networkInfo != null && networkInfo.isConnected());
+        return networkInfo != null && networkInfo.isAvailable();
     }
 
     //设置监听器
@@ -115,7 +99,7 @@ public class LoadingPageFragment extends Fragment {
             public void onClick(View v) {
 
                 //Uri 跳转到官网的Uri
-                Uri mUri = Uri.parse(LoadingPage.official_website);
+                Uri mUri = Uri.parse(MyApplication.getOfficialWebsite());
 
                 Intent mIntent = new Intent(Intent.ACTION_VIEW, mUri);
 
@@ -158,7 +142,7 @@ public class LoadingPageFragment extends Fragment {
                         super.onAnimationEnd(animation);
 
                         //异步做一些登陆准备  包括跳转
-                        new LoadingPageWordThread(LOGIN_URL).execute();
+                        new LoadingPageWordThread(MyApplication.getLoginUrl()).execute();
 
                     }
                 });
@@ -183,7 +167,7 @@ public class LoadingPageFragment extends Fragment {
             //判断是否需要自动登陆
             if (mUserInfo.getisAutoLogIn()) {
 
-                Log.e("hint",mUserInfo.getmUser()+" || "+mUserInfo.getmPassword()+ "++"+URL_Str);
+                Log.e("hint", mUserInfo.getmUser() + " || " + mUserInfo.getmPassword() + "++" + URL_Str);
                 new LogInParser(mUserInfo, URL_Str).checkLogIn();
             }
 
@@ -212,7 +196,7 @@ public class LoadingPageFragment extends Fragment {
 
             Intent mIntent;
 
-            Log.e("result_auto_login",userInfo.operationValue+"");
+            Log.e("result_auto_login", userInfo.operationValue + "");
 
             //判断是否登陆成功
             if (userInfo.operationValue != LogInParser.ERROR_VALUE_WRONG_PASSWORD &&

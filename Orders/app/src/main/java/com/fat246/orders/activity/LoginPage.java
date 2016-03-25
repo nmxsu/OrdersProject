@@ -30,11 +30,6 @@ import com.fat246.orders.parser.LogInParser;
 
 public class LoginPage extends AppCompatActivity {
 
-    /**
-     * 登陆要用到的URL 这个要配合到  URL前缀一起使用
-     */
-    private String LOGIN_URL;
-
     //View
     private AutoCompleteTextView mUser;
     private EditText mPassword;
@@ -60,67 +55,64 @@ public class LoginPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
 
-        //得到登陆的网络地址
-        LOGIN_URL=MyApplication.getLoginUrl();
-
         setView();
 
         setInfo();
 
-        isConnected=isOnline();
+        isConnected = isOnline();
 
         setListenler();
     }
 
     //给用户一些提示
-    private void hintUser(String msg){
+    private void hintUser(String msg) {
 
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     //判断是否连接到网络
-    public boolean isOnline(){
+    public boolean isOnline() {
 
-        ConnectivityManager connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        NetworkInfo networkInfo=connectivityManager.getActiveNetworkInfo();
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-        return (networkInfo!=null&&networkInfo.isConnected());
+        return (networkInfo != null && networkInfo.isConnected());
     }
 
     //加载信息
-    private void setInfo(){
+    private void setInfo() {
 
         //从Intent中得到用户信息
-        mUserInfo=getUserInfo();
+        getUserInfo();
 
         //设置信息
         mUser.setText(mUserInfo.getmUser());
-        if (!mUser.getText().toString().trim().equals("")&&!mUserInfo.getisSavePassword()){
+        if (!mUser.getText().toString().trim().equals("") && !mUserInfo.getisSavePassword()) {
 
             //移动聚焦到密码
             mPassword.requestFocus();
         }
-        if (mUserInfo.getisSavePassword()){
+        if (mUserInfo.getisSavePassword()) {
             mPassword.setText(mUserInfo.getmPassword());
             mSavePassword.setChecked(true);
 
             //可能不需要键盘输入了
             mForgotPassword.requestFocus();
         }
-        if (mUserInfo.getisAutoLogIn()){
+        if (mUserInfo.getisAutoLogIn()) {
             mAutoLogIn.setChecked(true);
         }
     }
 
-    public UserInfo getUserInfo() {
+    public void getUserInfo() {
 
         //首先得到SharedPreferences
         SharedPreferences mSP = this
                 .getSharedPreferences(UserInfo.login_info_key, Context.MODE_PRIVATE);
 
         //读取UserInfo信息
-        return new UserInfo(
+        this.mUserInfo=new UserInfo(
                 mSP.getString("mUser", ""),
                 mSP.getString("mPassword", ""),
                 mSP.getBoolean("isSavePassword", false),
@@ -129,21 +121,21 @@ public class LoginPage extends AppCompatActivity {
     }
 
     //控件
-    private void setView(){
+    private void setView() {
 
         mPassword = (EditText) findViewById(R.id.password);
         mUser = (AutoCompleteTextView) findViewById(R.id.user);
         mLogIn = (Button) findViewById(R.id.email_sign_in_button);
         mLogInFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        mSavePassword=(CheckBox)findViewById(R.id.save_password);
-        mAutoLogIn=(CheckBox)findViewById(R.id.auto_login);
-        mForgotPassword=(TextView)findViewById(R.id.action_forgot_password);
-        mNewUser=(TextView)findViewById(R.id.action_new_user);
+        mSavePassword = (CheckBox) findViewById(R.id.save_password);
+        mAutoLogIn = (CheckBox) findViewById(R.id.auto_login);
+        mForgotPassword = (TextView) findViewById(R.id.action_forgot_password);
+        mNewUser = (TextView) findViewById(R.id.action_new_user);
     }
 
     //监听
-    private void setListenler(){
+    private void setListenler() {
 
         /*
         //密码输入监听
@@ -165,10 +157,10 @@ public class LoginPage extends AppCompatActivity {
             public void onClick(View view) {
 
                 //如果没有网络连接的情况下  不给予登陆 给予提示
-                if (isConnected){
+                if (isConnected) {
 
                     attemptLogin();
-                }else {
+                } else {
 
                     hintUser("亲，请先链接网络哦。。。");
                 }
@@ -194,7 +186,7 @@ public class LoginPage extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 //当没有别选中的时候
-                if (!isChecked){
+                if (!isChecked) {
 
                     if (mAutoLogIn.isChecked()) mAutoLogIn.setChecked(false);
                 }
@@ -258,18 +250,18 @@ public class LoginPage extends AppCompatActivity {
 
         //是否需要取消登录
         if (cancel) {
-             focusView.requestFocus();
+            focusView.requestFocus();
         } else {
 
             //检查无误可以尝试登陆了
             showProgress(true);
-            mAuthTask =new UserLogInTask(LOGIN_URL);
+            mAuthTask = new UserLogInTask(MyApplication.getLoginUrl());
             mAuthTask.execute(setNewUserInfo());
         }
     }
 
     //包装一个新的UserInfo
-    public UserInfo setNewUserInfo(){
+    public UserInfo setNewUserInfo() {
 
         return new UserInfo(
                 mUser.getText().toString().trim(),
@@ -282,18 +274,14 @@ public class LoginPage extends AppCompatActivity {
     private boolean isUserValid(String user) {
 
         //用户是否合法
-        if (user.length()<2) return false;
-
-        return true;
+        return user.length() < 2;
     }
 
     //判断 密码 是否合法
     private boolean isPasswordValid(String password) {
 
         //密码至少6位
-        if(password.length() < 6) return false;
-
-        return true;
+        return password.length() < 6;
     }
 
     //显示登陆进度条
@@ -332,23 +320,23 @@ public class LoginPage extends AppCompatActivity {
         //URL
         private String URL_Str;
 
-        public UserLogInTask(String URL){
+        public UserLogInTask(String URL) {
 
-            this.URL_Str=URL;
+            this.URL_Str = URL;
         }
 
         @Override
         protected UserInfo doInBackground(UserInfo... params) {
 
             //新的UserInfo
-            UserInfo mNewUserInfo=params[0];
+            UserInfo mNewUserInfo = params[0];
 
             //判断
-            new LogInParser(mNewUserInfo,URL_Str).checkLogIn();
+            new LogInParser(mNewUserInfo, URL_Str).checkLogIn();
 
             //登陆成功？
-            if (mNewUserInfo.operationValue!=LogInParser.ERROR_VALUE_WRONG_PASSWORD
-                    &&mNewUserInfo.operationValue!=LogInParser.ERROR_VALUE_NETWORK_INCOORRECT){
+            if (mNewUserInfo.operationValue != LogInParser.ERROR_VALUE_WRONG_PASSWORD
+                    && mNewUserInfo.operationValue != LogInParser.ERROR_VALUE_NETWORK_INCOORRECT) {
 
                 //保存登陆信息到  Preferences
                 saveInfo(mNewUserInfo);
@@ -359,37 +347,37 @@ public class LoginPage extends AppCompatActivity {
         }
 
         //将登陆成功后的数据写到配置文件
-        private void saveInfo(UserInfo mNewUserInfo){
+        private void saveInfo(UserInfo mNewUserInfo) {
 
             //首先将用户名加入到自动补全数据库
 
 
-            SharedPreferences mSP=getSharedPreferences(UserInfo.login_info_key
-                    ,Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor=mSP.edit();
-            editor.putString("mUser",mNewUserInfo.getmUser());
-            editor.putString("mPassword",mNewUserInfo.getmPassword());
+            SharedPreferences mSP = getSharedPreferences(UserInfo.login_info_key
+                    , Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = mSP.edit();
+            editor.putString("mUser", mNewUserInfo.getmUser());
+            editor.putString("mPassword", mNewUserInfo.getmPassword());
             editor.putBoolean("isSavePassword", mNewUserInfo.getisSavePassword());
-            editor.putBoolean("isAutoLogIn",mNewUserInfo.getisAutoLogIn());
+            editor.putBoolean("isAutoLogIn", mNewUserInfo.getisAutoLogIn());
             editor.putInt("operationValue", mNewUserInfo.operationValue);
 
             //记住一定要提交
-            editor.commit();
+            editor.apply();
         }
 
         @Override
-        protected void onPostExecute(final  UserInfo mNewUserInfo) {
+        protected void onPostExecute(final UserInfo mNewUserInfo) {
             mAuthTask = null;
             showProgress(false);
 
-            if (mNewUserInfo.operationValue!=LogInParser.ERROR_VALUE_WRONG_PASSWORD
-                    && mNewUserInfo.operationValue!=LogInParser.ERROR_VALUE_NETWORK_INCOORRECT) {
+            if (mNewUserInfo.operationValue != LogInParser.ERROR_VALUE_WRONG_PASSWORD
+                    && mNewUserInfo.operationValue != LogInParser.ERROR_VALUE_NETWORK_INCOORRECT) {
 
                 //跳转
-                Intent mIntent=new Intent(LoginPage.this,MainPage.class);
+                Intent mIntent = new Intent(LoginPage.this, MainPage.class);
 
                 //包装数据
-                UserInfo.setData(mIntent,mNewUserInfo);
+                UserInfo.setData(mIntent, mNewUserInfo);
 
                 startActivity(mIntent);
 
@@ -398,12 +386,12 @@ public class LoginPage extends AppCompatActivity {
             } else {
 
                 //登陆失败
-                if (mNewUserInfo.operationValue==LogInParser.ERROR_VALUE_WRONG_PASSWORD){
+                if (mNewUserInfo.operationValue == LogInParser.ERROR_VALUE_WRONG_PASSWORD) {
                     mPassword.setError(getString(R.string.error_incorrect_password));
 
                 }
 
-                if(mNewUserInfo.operationValue==LogInParser.ERROR_VALUE_NETWORK_INCOORRECT){
+                if (mNewUserInfo.operationValue == LogInParser.ERROR_VALUE_NETWORK_INCOORRECT) {
 
                     hintUser(getString(R.string.error_incorrect_network));
                 }
