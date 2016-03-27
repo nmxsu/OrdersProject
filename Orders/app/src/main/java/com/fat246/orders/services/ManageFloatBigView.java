@@ -33,14 +33,9 @@ import com.fat246.orders.bean.UserInfo;
 import com.fat246.orders.parser.AllApplyListParser;
 import com.fat246.orders.parser.AllOrdersListParser;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Administrator on 2016/3/20.
- */
 public class ManageFloatBigView {
 
     //访问订单  以及 申请单的 网络地址
@@ -186,7 +181,7 @@ public class ManageFloatBigView {
 
 
         //选择按钮
-        final Button mOrdersApplys=(Button)rootView.findViewById(R.id.service_float_big_button_orders_applys);
+        final Button mOrdersApplys = (Button) rootView.findViewById(R.id.service_float_big_button_orders_applys);
         mOrdersApplys.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,12 +202,12 @@ public class ManageFloatBigView {
         });
 
         //设置按钮
-        Button mSetting=(Button)rootView.findViewById(R.id.service_float_big_button_setting);
+        Button mSetting = (Button) rootView.findViewById(R.id.service_float_big_button_setting);
         mSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(mContext,"墨迹墨迹。。。",Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "墨迹墨迹。。。", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -242,17 +237,17 @@ public class ManageFloatBigView {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(mContext, MoreInfo.class);
 
-                if (isOrdersData){
+                if (isOrdersData) {
 
                     //得到用户PO
-                    String PRHSORD_ID = ((OrderInfo)mData.get(position)).getPRHSORD_ID();
+                    String PRHSORD_ID = ((OrderInfo) mData.get(position)).getPRHSORD_ID();
 
                     intent.putExtra("PRHSORD_ID", PRHSORD_ID);
                     intent.putExtra("Location", 0);
-                }else {
+                } else {
 
                     //得到用户PO
-                    String PRHS_ID = ((ApplyInfo)mData.get(position)).getPRHS_ID();
+                    String PRHS_ID = ((ApplyInfo) mData.get(position)).getPRHS_ID();
 
                     intent.putExtra("PRHS_ID", PRHS_ID);
                     intent.putExtra("Location", 0);
@@ -276,7 +271,7 @@ public class ManageFloatBigView {
         //加载数据
         new LoadDataAsyncTask(isOrdersData, mContext).execute();
 
-        Log.e("lll>>>>>",mData.size()+"");
+        Log.e("lll>>>>>", mData.size() + "");
 
 
         //设置刷新数据源
@@ -285,7 +280,7 @@ public class ManageFloatBigView {
             @Override
             public void onClick(View v) {
 
-                new LoadDataAsyncTask(isOrdersData,mContext).execute();
+                new LoadDataAsyncTask(isOrdersData, mContext).execute();
             }
         });
     }
@@ -297,8 +292,7 @@ public class ManageFloatBigView {
 
         int code = mSP.getInt("operationValue", 99);
 
-        if (code >= 1 && code <= 3) return true;
-        else return false;
+        return code >= 1 && code <= 3;
     }
 
     public void removeView() {
@@ -355,28 +349,28 @@ public class ManageFloatBigView {
 
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
 
-            if (isOrdersData){
-                convertView=layoutInflater.inflate(R.layout.service_float_layout_larger_orders_item,null);
-            }else {
-                convertView=layoutInflater.inflate(R.layout.service_float_layout_larger_applys_item,null);
+            if (isOrdersData) {
+                convertView = layoutInflater.inflate(R.layout.service_float_layout_larger_orders_item, null);
+            } else {
+                convertView = layoutInflater.inflate(R.layout.service_float_layout_larger_applys_item, null);
             }
 
-            setOrdersApplysConvertView(convertView,position);
+            setOrdersApplysConvertView(convertView, position);
             return convertView;
         }
 
         private void setOrdersApplysConvertView(View convertView, int position) {
 
-           if (isOrdersData){
+            if (isOrdersData) {
 
-               TextView mText = (TextView) convertView.findViewById(R.id.service_float_big_item_orders_ord);
-               mText.setText(((OrderInfo) (mData.get(position))).getPRHSORD_ID());
+                TextView mText = (TextView) convertView.findViewById(R.id.service_float_big_item_orders_ord);
+                mText.setText(((OrderInfo) (mData.get(position))).getPRHSORD_ID());
 
-           }else {
+            } else {
 
-               TextView mText=(TextView)convertView.findViewById(R.id.service_float_big_applys_prd);
-               mText.setText(((ApplyInfo) (mData.get(position))).getPRHS_ID());
-           }
+                TextView mText = (TextView) convertView.findViewById(R.id.service_float_big_applys_prd);
+                mText.setText(((ApplyInfo) (mData.get(position))).getPRHS_ID());
+            }
         }
     }
 
@@ -388,11 +382,11 @@ public class ManageFloatBigView {
         //上下文
         private Context mContext;
 
-        public LoadDataAsyncTask(boolean isOrdersData,Context mContext){
+        public LoadDataAsyncTask(boolean isOrdersData, Context mContext) {
 
-            this.isOrdersData=isOrdersData;
+            this.isOrdersData = isOrdersData;
 
-            this.mContext=mContext;
+            this.mContext = mContext;
         }
 
         @Override
@@ -404,7 +398,7 @@ public class ManageFloatBigView {
             if (isOrdersData) {
 
                 //通过AllOrdersListParser 对象  解析 xml 数据
-                 mData= new AllOrdersListParser(mUserInfo, ALLORDERSLIST_URL).getAllOrdersList();
+                mData = new AllOrdersListParser(mUserInfo, ALLORDERSLIST_URL).getAllOrdersList();
 
             } else {
 
@@ -420,9 +414,9 @@ public class ManageFloatBigView {
         protected void onPostExecute(List list) {
 
             //数据源
-            mData=list;
+            mData = list;
 
-            Log.e("list____>>>",mData.size()+"");
+            Log.e("list____>>>", mData.size() + "");
 
             //需要刷新一下
             mAdapter.notifyDataSetChanged();

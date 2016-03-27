@@ -13,14 +13,10 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.fat246.orders.R;
-import com.fat246.orders.activity.LoadingPage;
 import com.fat246.orders.activity.LoginPage;
 import com.fat246.orders.bean.UserInfo;
 import com.fat246.orders.parser.LogInParser;
 
-/**
- * Created by Administrator on 2016/3/20.
- */
 public class ManageFloatSmallView {
 
     private static ManageFloatSmallView mManageFloatSmallView;
@@ -34,7 +30,7 @@ public class ManageFloatSmallView {
 
     public static boolean isShowing = false;
 
-    public static boolean isHide=false;
+    public static boolean isHide = false;
 
 
     private View rootView;
@@ -119,15 +115,15 @@ public class ManageFloatSmallView {
             @Override
             public void onClick(View v) {
 
-                if (isHide){
+                if (isHide) {
 
                     showView();
 
-                }else {
+                } else {
                     mUserInfo = getUserInfo();
 
-                    if (mUserInfo.operationValue!= LogInParser.ERROR_VALUE_WRONG_PASSWORD
-                            && mUserInfo.operationValue!=LogInParser.ERROR_VALUE_NETWORK_INCOORRECT) {
+                    if (mUserInfo.operationValue != LogInParser.ERROR_VALUE_WRONG_PASSWORD
+                            && mUserInfo.operationValue != LogInParser.ERROR_VALUE_NETWORK_INCOORRECT) {
 
                         ManageFloatSmallView.getManageFloatSmallView(mContext).removeView();
                         ManageFloatBigView.getManageFloatBigView(mContext).addView();
@@ -159,7 +155,7 @@ public class ManageFloatSmallView {
                 mSP.getString("mPassword", ""),
                 mSP.getBoolean("isSavePassword", false),
                 mSP.getBoolean("isAutoLogIn", false),
-                mSP.getInt("operationValue",99)
+                mSP.getInt("operationValue", 99)
         );
     }
 
@@ -174,7 +170,7 @@ public class ManageFloatSmallView {
         isShowing = true;
     }
 
-    private void showView(){
+    private void showView() {
 
     }
 }
