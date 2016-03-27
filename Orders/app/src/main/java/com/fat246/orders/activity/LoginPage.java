@@ -45,7 +45,7 @@ public class LoginPage extends AppCompatActivity {
     private UserLogInTask mAuthTask = null;
 
     //用户信息
-    private UserInfo mUserInfo;
+    private UserInfo mUserInfo=null;
 
     //是否连接到网络
     private boolean isConnected;
@@ -84,7 +84,7 @@ public class LoginPage extends AppCompatActivity {
     private void setInfo() {
 
         //从Intent中得到用户信息
-        getUserInfo();
+        mUserInfo=((MyApplication)getApplication()).getUserInfo();
 
         //设置信息
         mUser.setText(mUserInfo.getmUser());
@@ -103,21 +103,6 @@ public class LoginPage extends AppCompatActivity {
         if (mUserInfo.getisAutoLogIn()) {
             mAutoLogIn.setChecked(true);
         }
-    }
-
-    public void getUserInfo() {
-
-        //首先得到SharedPreferences
-        SharedPreferences mSP = this
-                .getSharedPreferences(UserInfo.login_info_key, Context.MODE_PRIVATE);
-
-        //读取UserInfo信息
-        this.mUserInfo=new UserInfo(
-                mSP.getString("mUser", ""),
-                mSP.getString("mPassword", ""),
-                mSP.getBoolean("isSavePassword", false),
-                mSP.getBoolean("isAutoLogIn", false)
-        );
     }
 
     //控件
@@ -231,7 +216,7 @@ public class LoginPage extends AppCompatActivity {
         View focusView = null;
 
         //检查用密码是否合法
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!TextUtils.isEmpty(password) && isPasswordValid(password)) {
             mPassword.setError(getString(R.string.error_invalid_password));
             focusView = mPassword;
             cancel = true;
@@ -242,7 +227,7 @@ public class LoginPage extends AppCompatActivity {
             mUser.setError(getString(R.string.error_field_required));
             focusView = mUser;
             cancel = true;
-        } else if (!isUserValid(user)) {
+        } else if (isUserValid(user)) {
             mUser.setError(getString(R.string.error_invalid_user));
             focusView = mUser;
             cancel = true;
@@ -339,30 +324,11 @@ public class LoginPage extends AppCompatActivity {
                     && mNewUserInfo.operationValue != LogInParser.ERROR_VALUE_NETWORK_INCOORRECT) {
 
                 //保存登陆信息到  Preferences
-                saveInfo(mNewUserInfo);
+                ((MyApplication)getApplication()).setUserInfo(mNewUserInfo);
 
             }
 
             return mNewUserInfo;
-        }
-
-        //将登陆成功后的数据写到配置文件
-        private void saveInfo(UserInfo mNewUserInfo) {
-
-            //首先将用户名加入到自动补全数据库
-
-
-            SharedPreferences mSP = getSharedPreferences(UserInfo.login_info_key
-                    , Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = mSP.edit();
-            editor.putString("mUser", mNewUserInfo.getmUser());
-            editor.putString("mPassword", mNewUserInfo.getmPassword());
-            editor.putBoolean("isSavePassword", mNewUserInfo.getisSavePassword());
-            editor.putBoolean("isAutoLogIn", mNewUserInfo.getisAutoLogIn());
-            editor.putInt("operationValue", mNewUserInfo.operationValue);
-
-            //记住一定要提交
-            editor.apply();
         }
 
         @Override

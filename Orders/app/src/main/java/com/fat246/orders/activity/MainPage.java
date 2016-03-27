@@ -23,8 +23,6 @@ import com.fat246.orders.R;
 import com.fat246.orders.bean.UserInfo;
 import com.fat246.orders.fragment.AllApplysFragment;
 import com.fat246.orders.fragment.AllOrdersFragment;
-import com.fat246.orders.fragment.MineApplysFragment;
-import com.fat246.orders.fragment.MineOrdersFragment;
 import com.fat246.orders.widget.ChangeTabWithColorView;
 
 public class MainPage extends AppCompatActivity
@@ -331,24 +329,10 @@ public class MainPage extends AppCompatActivity
 
             Fragment rootFragment = null;
 
-            switch (position) {
-
-                case 0:
-                    rootFragment = new AllOrdersFragment();
-                    break;
-                case 1:
-                    rootFragment = new AllApplysFragment();
-                    break;
-                case 2:
-                    rootFragment = new MineOrdersFragment();
-                    break;
-                case 3:
-                    rootFragment = new MineApplysFragment();
-                    break;
-
-                default:
-                    rootFragment = new AllOrdersFragment();
-                    break;
+            if (position%2==0){
+                rootFragment=new AllOrdersFragment();
+            }else {
+                rootFragment=new AllApplysFragment();
             }
 
             rootFragment.setArguments(mUserInfo.getBundle());

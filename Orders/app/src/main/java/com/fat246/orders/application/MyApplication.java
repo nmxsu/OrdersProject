@@ -1,6 +1,10 @@
 package com.fat246.orders.application;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.fat246.orders.bean.UserInfo;
 
 public class MyApplication extends Application {
 
@@ -26,9 +30,57 @@ public class MyApplication extends Application {
     //官方网站
     private static final String OFFICIAL_WEBSITE = "http://www.fat246.com";
 
+    //保存用户信息
+    private UserInfo mUserInfo;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        //首先从配置文件中获取用户信息
+        setUserInfo();
+    }
+
+    //通过配置文件获取用户的信息
+    public void setUserInfo() {
+
+        //首先得到SharedPreferences
+        SharedPreferences mSP = getApplicationContext()
+                .getSharedPreferences(UserInfo.login_info_key, Context.MODE_PRIVATE);
+
+        //读取UserInfo信息
+        this.mUserInfo = new UserInfo(
+                mSP.getString("mUser", ""),
+                mSP.getString("mPassword", ""),
+                mSP.getBoolean("isSavePassword", false),
+                mSP.getBoolean("isAutoLogIn", false)
+        );
+    }
+
+    //用户自定义用户信息
+    public void setUserInfo(UserInfo mNewUserInfo){
+
+        //首先将用户自定义的用户信息保存到配置文件中
+        SharedPreferences mSP = getSharedPreferences(UserInfo.login_info_key
+                , Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = mSP.edit();
+        editor.putString("mUser", mNewUserInfo.getmUser());
+        editor.putString("mPassword", mNewUserInfo.getmPassword());
+        editor.putBoolean("isSavePassword", mNewUserInfo.getisSavePassword());
+        editor.putBoolean("isAutoLogIn", mNewUserInfo.getisAutoLogIn());
+        editor.putInt("operationValue", mNewUserInfo.operationValue);
+
+        //记住一定要提交
+        editor.apply();
+
+        this.mUserInfo=mNewUserInfo;
+    }
+
+    //得到用户信息
+    public UserInfo getUserInfo(){
+
+        return this.mUserInfo;
     }
 
     //获得订单地址
@@ -47,5 +99,7 @@ public class MyApplication extends Application {
     }
 
     //返回官方网址
-    public static String getOfficialWebsite(){return OFFICIAL_WEBSITE;}
+    public static String getOfficialWebsite() {
+        return OFFICIAL_WEBSITE;
+    }
 }

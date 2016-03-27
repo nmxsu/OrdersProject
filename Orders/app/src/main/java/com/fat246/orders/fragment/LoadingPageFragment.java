@@ -38,6 +38,9 @@ public class LoadingPageFragment extends Fragment {
     //动画的持续时间
     private static final long Anim_Duration = 1000;
 
+    //用户信息
+    private UserInfo mUserInfo;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,6 +49,8 @@ public class LoadingPageFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_loading_page, container, false);
 
         setView(rootView);
+
+        mUserInfo=((MyApplication)getActivity().getApplication()).getUserInfo();
 
         if (!isOnline()) hintUser("亲，没有网络哦。。。");
 
@@ -161,34 +166,13 @@ public class LoadingPageFragment extends Fragment {
         @Override
         protected UserInfo doInBackground(Void... params) {
 
-            //从Preferences中读取UserInfo的信息
-            UserInfo mUserInfo = getUserInfo();
-
             //判断是否需要自动登陆
             if (mUserInfo.getisAutoLogIn()) {
 
-                Log.e("hint", mUserInfo.getmUser() + " || " + mUserInfo.getmPassword() + "++" + URL_Str);
                 new LogInParser(mUserInfo, URL_Str).checkLogIn();
             }
 
             return mUserInfo;
-        }
-
-        //访问网络
-
-        public UserInfo getUserInfo() {
-
-            //首先得到SharedPreferences
-            SharedPreferences mSP = getActivity()
-                    .getSharedPreferences(UserInfo.login_info_key, Context.MODE_PRIVATE);
-
-            //读取UserInfo信息
-            return new UserInfo(
-                    mSP.getString("mUser", ""),
-                    mSP.getString("mPassword", ""),
-                    mSP.getBoolean("isSavePassword", false),
-                    mSP.getBoolean("isAutoLogIn", false)
-            );
         }
 
         @Override

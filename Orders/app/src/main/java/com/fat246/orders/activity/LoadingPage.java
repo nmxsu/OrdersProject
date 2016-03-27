@@ -3,6 +3,7 @@ package com.fat246.orders.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -41,8 +42,12 @@ public class LoadingPage extends AppCompatActivity {
     //启动服务
     private void startService() {
 
-        Intent mIntent = new Intent(LoadingPage.this, MyService.class);
-        startService(mIntent);
+        //只有当 Android 的版本低于 6.0 的时候才有权限开启悬浮窗口
+        if (Build.VERSION.SDK_INT<Build.VERSION_CODES.M){
+
+            Intent mIntent = new Intent(LoadingPage.this, MyService.class);
+            startService(mIntent);
+        }
     }
 
     //添加Fragment

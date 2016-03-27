@@ -27,8 +27,8 @@
     <string name="action_settings">设置</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_primary_page">主页</string>
-    <string name="action_all_orders">以审订单</string>
-    <string name="action_all_applys">以审申请单</string>
+    <string name="action_all_orders">已审订单</string>
+    <string name="action_all_applys">已审申请单</string>
     <string name="action_mine_orders">待审订单</string>
     <string name="action_mine_applys">待审申请单</string>
 
