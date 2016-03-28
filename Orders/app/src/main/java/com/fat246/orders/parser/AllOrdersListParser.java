@@ -17,9 +17,6 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Administrator on 2016/3/7.
- */
 public class AllOrdersListParser {
 
     //URL str
@@ -46,16 +43,12 @@ public class AllOrdersListParser {
     //发送  post 请求
     private List<OrderInfo> sendGetAllOrdersListPost(String param) {
 
-        Log.e("List",param);
-
         PrintWriter out = null;
         List<OrderInfo> mOrdersList;
 
         try {
 
             URL url = new URL(URL_Str);
-
-            Log.e("url====>>>>",URL_Str);
 
             //打开和URL之间的链接
             URLConnection conn = url.openConnection();
@@ -87,12 +80,11 @@ public class AllOrdersListParser {
         } catch (Exception e) {
 
             e.printStackTrace();
-            Log.e("misstake",""+e.getMessage());
             mOrdersList = new ArrayList<>();
         }
 
         //添加一点 车市数据
-        mOrdersList.add(new OrderInfo("id","dd","na"));
+        mOrdersList.add(new OrderInfo("id", "dd", "na"));
 
         return mOrdersList;
     }
@@ -133,17 +125,17 @@ public class AllOrdersListParser {
                                 case 0:
                                     PRHSORD_ID = str;
 
-                                    if (PRHSORD_ID==null) PRHSORD_ID="";
+                                    if (PRHSORD_ID == null) PRHSORD_ID = "";
                                     break;
                                 case 1:
                                     NAMEE = str;
 
-                                    if (NAMEE==null) NAMEE="";
+                                    if (NAMEE == null) NAMEE = "";
                                     break;
                                 case 2:
                                     PRAC_NAME = str;
 
-                                    if (PRAC_NAME==null) PRAC_NAME="";
+                                    if (PRAC_NAME == null) PRAC_NAME = "";
                                     //添加到  mOrdersList
                                     mOrdersList.add(new OrderInfo(PRHSORD_ID, NAMEE, PRAC_NAME));
                                     break;

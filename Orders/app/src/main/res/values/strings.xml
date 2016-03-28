@@ -67,4 +67,23 @@
     <string name="popupwindow_progress_info">完成情况</string>
     <string name="popupwindow_slection_state">审批</string>
 
+    <!--订单详细信息-->
+    <string name="order_more_info_list_item_MATE_Code">MATE_Code:</string>
+    <string name="order_more_info_list_item_MATE_Name">MATE_Name:</string>
+    <string name="order_more_info_list_item_MUNITU_NAME">MUNITU_NAME:</string>
+    <string name="order_more_info_list_item_MATE_Size">MATE_Size:</string>
+    <string name="order_more_info_list_item_MATE_Model">MATE_Model:</string>
+    <string name="order_more_info_list_item_PRHSOD_AMNT">PRHSOD_AMNT:</string>
+    <string name="order_more_info_list_item_PRHSOD_ACCEIN">PRHSOD_ACCEIN:</string>
+    <string name="order_more_info_list_item_PRHSOD_BILLIN">PRHSOD_BILLIN:</string>
+    <string name="order_more_info_list_item_PRHSOD_AMNT_RTN">PRHSOD_AMNT_RTN:</string>
+    <string name="order_more_info_list_item_MATE_PRICEP">MATE_PRICEP:</string>
+
+    <!--申请单详细信息-->
+    <string name="apply_more_info_list_item_MATE_Code">MATE_Code</string>
+    <string name="apply_more_info_list_item_MATE_Name">MATE_Name</string>
+    <string name="apply_more_info_list_item_MATE_Size">MATE_Size</string>
+    <string name="apply_more_info_list_item_PRHSD_AMNT">PRHSD_AMNT</string>
+    <string name="apply_more_info_list_item_MATE_PRICEP">MATE_PRICEP</string>
+
 </resources>

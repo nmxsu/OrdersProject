@@ -22,6 +22,13 @@ public class MyApplication extends Application {
     private static final String ALLAPPLYSLIST_SERVER = "getAllApplyList";
     private static final String ALLAPPLYSLIST_URL = PRE_URL + "//" + ALLAPPLYSLIST_SERVER;
 
+    //订单详细信息地址
+    private static final String ORDERSMOREINFOLIST_SERVER = "getOrderDetailList";
+    private static final String ORDERSMOREINFOLIST_URL = PRE_URL + "//" + ORDERSMOREINFOLIST_SERVER;
+
+    //申请单详细信息地址
+    private static final String APPLYSMOREINFOLIST_SERVER = "getApplyDetailList";
+    private static final String APPLYSMOREINFOLIST_URL = PRE_URL + "//" + APPLYSMOREINFOLIST_SERVER;
 
     //登陆要用到的URL 这个要配合到  URL前缀一起使用
     private static final String LOGIN_SERVER = "isLogin";
@@ -58,7 +65,7 @@ public class MyApplication extends Application {
     }
 
     //用户自定义用户信息
-    public void setUserInfo(UserInfo mNewUserInfo){
+    public void setUserInfo(UserInfo mNewUserInfo) {
 
         //首先将用户自定义的用户信息保存到配置文件中
         SharedPreferences mSP = getSharedPreferences(UserInfo.login_info_key
@@ -74,11 +81,11 @@ public class MyApplication extends Application {
         //记住一定要提交
         editor.apply();
 
-        this.mUserInfo=mNewUserInfo;
+        this.mUserInfo = mNewUserInfo;
     }
 
     //得到用户信息
-    public UserInfo getUserInfo(){
+    public UserInfo getUserInfo() {
 
         return this.mUserInfo;
     }
@@ -91,6 +98,16 @@ public class MyApplication extends Application {
     //返回申请单
     public static String getAllapplyslistUrl() {
         return ALLAPPLYSLIST_URL;
+    }
+
+    //返回订单详细信息地址
+    public static String getOrdersmoreinfolistUrl() {
+        return ORDERSMOREINFOLIST_URL;
+    }
+
+    //返回申请单详细信息地址
+    public static String getApplysmoreinfolistUrl() {
+        return APPLYSMOREINFOLIST_URL;
     }
 
     //获得登陆的地址
