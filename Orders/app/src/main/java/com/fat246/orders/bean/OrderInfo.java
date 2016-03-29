@@ -23,6 +23,15 @@ public class OrderInfo {
         this.PRAC_NAME=PRAC_NAME;
     }
 
+    //只包含ID的OrderInfo
+    public OrderInfo(String PRHSORD_ID){
+
+        this.PRHSORD_ID=PRHSORD_ID;
+        this.MATE_CODE="";
+        this.PRHS_SOUR="";
+        this.DEP_CODE="";
+    }
+
     //只读
     public String getPRHSORD_ID(){return this.PRHSORD_ID;}
     public String getNAMEE(){return this.NAMEE;}
