@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.fat246.orders.R;
-import com.fat246.orders.activity.LoadingPage;
 import com.fat246.orders.activity.LoginPage;
 import com.fat246.orders.activity.MainPage;
 import com.fat246.orders.application.MyApplication;
@@ -31,39 +30,29 @@ import com.fat246.orders.parser.LogInParser;
 
 import java.util.List;
 
-/**
- * Created by Administrator on 2016/3/6.
- */
 public class LoadingPageFragment extends Fragment {
-
-    /**
-     * 登陆要用到的URL
-     */
-    private static final String LOGIN_SERVER = "isLogin";
-    private String LOGIN_URL;
 
     //开始界面的图片
     private ImageView mImageView;
 
-    //判断是否有网络连接
-    private boolean isConnected;
-
     //动画的持续时间
-    private static long Anim_Duration = 1000;
+    private static final long Anim_Duration = 1000;
+
+    //用户信息
+    private UserInfo mUserInfo;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        //inflate View
         View rootView = inflater.inflate(R.layout.fragment_loading_page, container, false);
-
-        getSomeApplicationInfo();
 
         setView(rootView);
 
-        isConnected = isOnline();
+        mUserInfo=((MyApplication)getActivity().getApplication()).getUserInfo();
 
-        if (!isConnected) hintUser("亲，没有网络哦。。。");
+        if (!isOnline()) hintUser("亲，没有网络哦。。。");
 
         setListenler();
 
@@ -92,14 +81,6 @@ public class LoadingPageFragment extends Fragment {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 
-    //得到  用户登录时候要访问的的URL
-    public void getSomeApplicationInfo() {
-
-        //用URL 前缀 加上  要访问的服务构成  URL
-        MyApplication mApp = (MyApplication) getActivity().getApplication();
-        LOGIN_URL = mApp.PRE_URL + "//" + LOGIN_SERVER;
-    }
-
     //找到一些 控件
     private void setView(View rootView) {
         mImageView = (ImageView) rootView.findViewById(R.id.home_img);
@@ -113,7 +94,7 @@ public class LoadingPageFragment extends Fragment {
 
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-        return (networkInfo != null && networkInfo.isConnected());
+        return networkInfo != null && networkInfo.isAvailable();
     }
 
     //设置监听器
@@ -123,7 +104,7 @@ public class LoadingPageFragment extends Fragment {
             public void onClick(View v) {
 
                 //Uri 跳转到官网的Uri
-                Uri mUri = Uri.parse(LoadingPage.official_website);
+                Uri mUri = Uri.parse(MyApplication.getOfficialWebsite());
 
                 Intent mIntent = new Intent(Intent.ACTION_VIEW, mUri);
 
@@ -166,7 +147,7 @@ public class LoadingPageFragment extends Fragment {
                         super.onAnimationEnd(animation);
 
                         //异步做一些登陆准备  包括跳转
-                        new LoadingPageWordThread(LOGIN_URL).execute();
+                        new LoadingPageWordThread(MyApplication.getLoginUrl()).execute();
 
                     }
                 });
@@ -185,34 +166,13 @@ public class LoadingPageFragment extends Fragment {
         @Override
         protected UserInfo doInBackground(Void... params) {
 
-            //从Preferences中读取UserInfo的信息
-            UserInfo mUserInfo = getUserInfo();
-
             //判断是否需要自动登陆
             if (mUserInfo.getisAutoLogIn()) {
 
-                Log.e("hint",mUserInfo.getmUser()+" || "+mUserInfo.getmPassword()+ "++"+URL_Str);
                 new LogInParser(mUserInfo, URL_Str).checkLogIn();
             }
 
             return mUserInfo;
-        }
-
-        //访问网络
-
-        public UserInfo getUserInfo() {
-
-            //首先得到SharedPreferences
-            SharedPreferences mSP = getActivity()
-                    .getSharedPreferences(UserInfo.login_info_key, Context.MODE_PRIVATE);
-
-            //读取UserInfo信息
-            return new UserInfo(
-                    mSP.getString("mUser", ""),
-                    mSP.getString("mPassword", ""),
-                    mSP.getBoolean("isSavePassword", false),
-                    mSP.getBoolean("isAutoLogIn", false)
-            );
         }
 
         @Override
@@ -220,7 +180,7 @@ public class LoadingPageFragment extends Fragment {
 
             Intent mIntent;
 
-            Log.e("result_auto_login",userInfo.operationValue+"");
+            Log.e("result_auto_login", userInfo.operationValue + "");
 
             //判断是否登陆成功
             if (userInfo.operationValue != LogInParser.ERROR_VALUE_WRONG_PASSWORD &&
@@ -235,7 +195,8 @@ public class LoadingPageFragment extends Fragment {
                 mIntent = new Intent(getActivity(), LoginPage.class);
             }
 
-            UserInfo.setData(mIntent, userInfo);
+            //改从配置文件里面获取信息过后就不需要这个了
+//            UserInfo.setData(mIntent, userInfo);
 
             startActivity(mIntent);
 

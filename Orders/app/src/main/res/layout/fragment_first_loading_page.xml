@@ -8,35 +8,29 @@
         android:id="@+id/mViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
+
     <com.fat246.orders.widget.CI.CircleIndicator
+        android:id="@+id/mCircleIndicator"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_above="@+id/now_login"
-        android:id="@+id/mCircleIndicator"
         CircleIndicator:ci_background="@android:color/white"
-        CircleIndicator:ci_selected_background="0xffe6454a"
-        CircleIndicator:ci_mode="outside"
         CircleIndicator:ci_gravity="center"
+        CircleIndicator:ci_mode="outside"
         CircleIndicator:ci_radius="10dp"
-        />
+        CircleIndicator:ci_selected_background="0xffe6454a" />
+
     <Button
         android:id="@+id/now_login"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/now_login"
-        android:textStyle="bold"
-        />
-    <TextView
-        android:id="@+id/come_in_directly"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/come_in_directly"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        />
+        android:background="@color/colorAccent"
+        android:text="@string/now_login"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
 </RelativeLayout>

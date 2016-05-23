@@ -10,28 +10,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.fat246.orders.R;
 import com.fat246.orders.activity.LoginPage;
-import com.fat246.orders.activity.MainPage;
-import com.fat246.orders.bean.UserInfo;
 import com.fat246.orders.widget.CI.CircleIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-/**
- * Created by Administrator on 2016/3/6.
- */
 public class FirstLoadingPageFragment extends Fragment {
 
     //View First
     private ViewPager mViewPager;
     private CircleIndicator mCircleIndicator;
     private Button mNowLogIn;
-    private TextView mComeIndirectly;
 
     private List<View> mViewList;
 
@@ -40,7 +33,7 @@ public class FirstLoadingPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         //inflater View
-        View rootView=inflater.inflate(R.layout.fragment_first_loading_page,container,false);
+        View rootView = inflater.inflate(R.layout.fragment_first_loading_page, container, false);
 
         setFirstView(rootView);
 
@@ -53,53 +46,49 @@ public class FirstLoadingPageFragment extends Fragment {
         return rootView;
     }
 
-    public void setFirstView(View rootView){
+    public void setFirstView(View rootView) {
 
-        mViewPager=(ViewPager)rootView.findViewById(R.id.mViewPager);
-        mCircleIndicator=(CircleIndicator)rootView.findViewById(R.id.mCircleIndicator);
-        mNowLogIn=(Button)rootView.findViewById(R.id.now_login);
-        mComeIndirectly=(TextView)rootView.findViewById(R.id.come_in_directly);
+        mViewPager = (ViewPager) rootView.findViewById(R.id.mViewPager);
+        mCircleIndicator = (CircleIndicator) rootView.findViewById(R.id.mCircleIndicator);
+        mNowLogIn = (Button) rootView.findViewById(R.id.now_login);
     }
 
-    public void setFirstData(){
+    public void setFirstData() {
 
-        mViewList=new ArrayList<>();
-        Random random=new Random();
+        mViewList = new ArrayList<>();
 
-        for (int i=0; i<5; i++){
+        ImageView[] mImages = new ImageView[5];
 
-            View mView=new View(getActivity());
-            mView.setBackgroundColor(0xff000000|random.nextInt(0x00ffffff));
-            mViewList.add(mView);
+        for (int i = 0; i < 5; i++) {
+
+            mImages[i] = new ImageView(getActivity());
+
+            mImages[i].setScaleType(ImageView.ScaleType.FIT_XY);
+        }
+
+        mImages[0].setImageResource(R.drawable.pic1);
+        mImages[1].setImageResource(R.drawable.pic2);
+        mImages[2].setImageResource(R.drawable.pic3);
+        mImages[3].setImageResource(R.drawable.pic4);
+        mImages[4].setImageResource(R.drawable.pic5);
+
+        for (int i = 0; i < 5; i++) {
+
+            mViewList.add(mImages[i]);
         }
     }
 
     //监听事件
-    public void setFirstListener(){
+    public void setFirstListener() {
 
         mNowLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent mIntent=new Intent(getActivity(),LoginPage.class);
+                Intent mIntent = new Intent(getActivity(), LoginPage.class);
 
-                UserInfo.setData(mIntent);
-
-                startActivity(mIntent);
-
-                //动画
-
-                getActivity().finish();
-            }
-        });
-
-        mComeIndirectly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent mIntent=new Intent(getActivity(),MainPage.class);
-
-                UserInfo.setData(mIntent);
+                //改为从配置文件里面获取过后就不需要传入配置文件了
+//                UserInfo.setData(mIntent);
 
                 startActivity(mIntent);
 
@@ -108,10 +97,11 @@ public class FirstLoadingPageFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
 
     }
 
-    public void setSomeThing(){
+    public void setSomeThing() {
 
         //
         mViewPager.setAdapter(pagerAdapter);

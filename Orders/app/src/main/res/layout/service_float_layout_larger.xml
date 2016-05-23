@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/service_float_big_linearlayout"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/service_float_big_button_home"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:scaleType="centerInside"
+                android:background="@color/colorPrimary"
+                android:src="@drawable/ic_menu_home" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:text="@string/service_float_larger_title"
+                android:textColor="@color/white" />
+
+            <ImageButton
+                android:id="@+id/service_float_big_button_cancle"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:scaleType="centerInside"
+                android:background="@color/colorPrimary"
+                android:src="@drawable/ic_action_cancle" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            >
+
+            <ListView
+                android:id="@+id/service_float_big_button_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+
+            </ListView>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/service_float_big_button_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="设置" />
+
+            <Button
+                android:id="@+id/service_float_big_button_orders_applys"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="订单" />
+
+            <Button
+                android:id="@+id/service_float_big_button_reflash"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="刷新" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--自定义 CircleIndicator控件属性-->
     <declare-styleable name="CircleIndicator">
         <attr name="ci_radius" format="dimension"/>
         <attr name="ci_margin" format="dimension"/>
@@ -17,6 +19,7 @@
         </attr>
     </declare-styleable>
 
+    <!--自定义的  ChangeTabWithColorView 控件属性-->
     <declare-styleable name="ChangeTabWithColorView">
         <attr name="ct_icon" format="reference"/>
         <attr name="ct_color" format="color"/>
@@ -25,6 +28,7 @@
         <attr name="ct_text_size" format="dimension"/>
     </declare-styleable>
 
+    <!--引入的下拉刷新的属性-->
     <declare-styleable name="PtrFrameLayout">
         <!-- Optional. If you put header and content in xml, you can you these to specify them. -->
         <attr name="ptr_header" format="reference" />
@@ -50,6 +54,7 @@
         <attr name="ptr_rotate_ani_time" format="integer" />
     </declare-styleable>
 
+    <!--自定义的  原型ImageView 的属性-->
     <declare-styleable name="CircleImageView">
         <attr name="civ_border_width" format="dimension" />
         <attr name="civ_border_color" format="color" />

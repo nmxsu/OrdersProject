@@ -16,47 +16,15 @@
    <LinearLayout
        android:id="@+id/orders_more_info_linear_layout"
        android:layout_width="match_parent"
-       android:layout_height="match_parent"
+       android:layout_height="800dp"
        android:orientation="vertical"
        android:visibility="gone">
-       <TextView
-           android:id="@+id/orders_more_info_namee"
-           android:layout_width="match_parent"
-           android:layout_height="@dimen/item_height"
-           android:layout_weight="1"
-           android:textSize="@dimen/item_title_size"
-           android:gravity="left"/>
 
-       <TextView
-           android:id="@+id/orders_more_info_prac_name"
+       <ListView
+           android:id="@+id/orders_more_info_list"
            android:layout_width="match_parent"
-           android:layout_height="@dimen/item_height"
-           android:layout_weight="1"
-           android:textSize="@dimen/item_title_size"
-           android:gravity="left"/>
+           android:layout_height="match_parent">
 
-       <TextView
-           android:id="@+id/orders_more_info_create_name"
-           android:layout_width="match_parent"
-           android:layout_height="@dimen/item_height"
-           android:layout_weight="1"
-           android:textSize="@dimen/item_title_size"
-           android:gravity="left"/>
-
-       <TextView
-           android:id="@+id/orders_more_info_modify_name"
-           android:layout_width="match_parent"
-           android:layout_height="@dimen/item_height"
-           android:layout_weight="1"
-           android:textSize="@dimen/item_title_size"
-           android:gravity="left"/>
-
-       <TextView
-           android:id="@+id/orders_more_info_dry_auth_name"
-           android:layout_width="match_parent"
-           android:layout_height="@dimen/item_height"
-           android:layout_weight="1"
-           android:textSize="@dimen/item_title_size"
-           android:gravity="left"/>
+       </ListView>
    </LinearLayout>
 </FrameLayout>

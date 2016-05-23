@@ -56,18 +56,18 @@ public class MoreInfo extends AppCompatActivity {
     //设置 Fragment
     public void setFragment() {
 
-        Fragment mFragment=null;
+        Fragment mFragment = null;
 
-        if (Location%2==0){
-            mFragment=new OrdersMoreInfoFragment();
-        }else {
-            mFragment=new ApplysMoreInfoFragment();
+        if (Location % 2 == 0) {
+            mFragment = new OrdersMoreInfoFragment();
+        } else {
+            mFragment = new ApplysMoreInfoFragment();
         }
 
         //设置 ID 和 Location 信息
-        Bundle mBundle=new Bundle();
-        mBundle.putString("ID",ID);
-        mBundle.putInt("Location",Location);
+        Bundle mBundle = new Bundle();
+        mBundle.putString("ID", ID);
+        mBundle.putInt("Location", Location);
 
         mFragment.setArguments(mBundle);
 
@@ -114,13 +114,13 @@ public class MoreInfo extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id=item.getItemId();
+        int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
 
             case android.R.id.home:
 
-                Toast.makeText(this,"here",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "here", Toast.LENGTH_LONG).show();
                 break;
         }
 

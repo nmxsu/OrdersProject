@@ -1,55 +1,65 @@
 package com.fat246.orders.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.fat246.orders.R;
 import com.fat246.orders.bean.UserInfo;
 import com.fat246.orders.fragment.FirstLoadingPageFragment;
 import com.fat246.orders.fragment.LoadingPageFragment;
+import com.fat246.orders.services.MyService;
 
 public class LoadingPage extends AppCompatActivity {
 
     //是否是第一次登陆
-    private boolean isFirstLoading;
-
-    //官方网站
-    public static String official_website="http://www.fat246.com";
+    private boolean isFirstLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading_page);
 
-        if (findViewById(R.id.loading_page_frame_layout)!=null){
-            if(savedInstanceState!=null){
+        if (findViewById(R.id.loading_page_frame_layout) != null) {
+            if (savedInstanceState != null) {
                 return;
             }
         }
 
+        //启动悬浮窗口的服务
+        startService();
+
         //判断是否是第一次登陆
-        isFirstLoading=isFirstLoad();
+        isFirstLoading = isFirstLoad();
 
         toAddFragment();
     }
 
+    //启动服务
+    private void startService() {
+
+        //只有当 Android 的版本低于 6.0 的时候才有权限开启悬浮窗口
+        if (Build.VERSION.SDK_INT<Build.VERSION_CODES.M){
+
+            Intent mIntent = new Intent(LoadingPage.this, MyService.class);
+            startService(mIntent);
+        }
+    }
+
     //添加Fragment
-    private void toAddFragment(){
+    private void toAddFragment() {
 
         Fragment mFragment;
-        if (isFirstLoading){
+        if (isFirstLoading) {
 
-            mFragment=new FirstLoadingPageFragment();
-        }else {
+            mFragment = new FirstLoadingPageFragment();
+        } else {
 
-            mFragment=new LoadingPageFragment();
+            mFragment = new LoadingPageFragment();
         }
 
         //添加到 Fragment Container
@@ -58,25 +68,23 @@ public class LoadingPage extends AppCompatActivity {
     }
 
     //判断是不是第一次启动程序
-    public boolean isFirstLoad(){
+    public boolean isFirstLoad() {
 
         //首先得到SharedPreferences
-        SharedPreferences mSP=getSharedPreferences(UserInfo.login_info_key, Context.MODE_PRIVATE);
+        SharedPreferences mSP = getSharedPreferences(UserInfo.login_info_key, Context.MODE_PRIVATE);
 
-        boolean isFirst=mSP.getBoolean("isFirstLoad",true);
+        boolean isFirst = mSP.getBoolean("isFirstLoad", true);
 
-        if(isFirst){
-            SharedPreferences.Editor mEditor=mSP.edit();
+        if (isFirst) {
+
+            SharedPreferences.Editor mEditor = mSP.edit();
             mEditor.putBoolean("isFirstLoad", false);
 
             //提交
-            mEditor.commit();
+            mEditor.apply();
 
-            isFirstLoading=true;
             return true;
-        }else {
-
-            isFirstLoading=false;
+        } else {
             return false;
         }
     }

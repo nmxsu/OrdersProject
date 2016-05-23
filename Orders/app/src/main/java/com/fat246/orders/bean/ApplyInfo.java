@@ -26,6 +26,14 @@ public class ApplyInfo {
         this.PSR_NAME=PSR_NAME;
     }
 
+    public ApplyInfo(String PRHS_ID){
+
+        this.PRHS_ID=PRHS_ID;
+        this.DEP_NAME="";
+        this.PSD_NAME="";
+        this.PSR_NAME="";
+    }
+
     //可获取
     public String getPRHS_ID(){return this.PRHS_ID;}
     public String getDEP_NAME(){return this.DEP_NAME;}

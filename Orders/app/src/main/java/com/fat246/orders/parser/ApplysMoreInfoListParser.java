@@ -1,10 +1,9 @@
 package com.fat246.orders.parser;
 
-import android.util.Log;
 import android.util.Xml;
 
-import com.fat246.orders.bean.OrderInfo;
-import com.fat246.orders.bean.UserInfo;
+import com.fat246.orders.bean.ApplyInfo;
+import com.fat246.orders.bean.ApplyMoreInfoListItem;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -17,34 +16,34 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllOrdersListParser {
+/**
+ * Created by Administrator on 2016/3/29.
+ */
+public class ApplysMoreInfoListParser {
 
-    //URL str
+    //申请单详细信息地址
     private String URL_Str;
 
-    //UserInfo
-    private UserInfo mUserInfo;
+    //申请单信息
+    private ApplyInfo mApplyInfo;
 
-    public AllOrdersListParser(UserInfo mUserInfo, String URL_Str) {
+    public ApplysMoreInfoListParser(String URL_Str,ApplyInfo mApplyInfo){
 
-        this.mUserInfo = mUserInfo;
-
-        this.URL_Str = URL_Str;
+        this.URL_Str=URL_Str;
+        this.mApplyInfo=mApplyInfo;
     }
 
-    public List<OrderInfo> getAllOrdersList() {
+    public List<ApplyMoreInfoListItem> getApplysMoreInfoList(){
 
-        //保存中网页服务上面加载下来的  xml数据
-        List<OrderInfo> mOrdersList = sendGetAllOrdersListPost("autId=" + mUserInfo.getmUser());
+        List<ApplyMoreInfoListItem> applyMoreInfoList=sendGetApplysMoreInfoList("ApplyId="+mApplyInfo.getPRHS_ID());
 
-        return mOrdersList;
+        return applyMoreInfoList;
     }
 
-    //发送  post 请求
-    private List<OrderInfo> sendGetAllOrdersListPost(String param) {
+    private List<ApplyMoreInfoListItem> sendGetApplysMoreInfoList(String param){
 
         PrintWriter out = null;
-        List<OrderInfo> mOrdersList;
+        List<ApplyMoreInfoListItem> mApplysMoreInfoList;
 
         try {
 
@@ -75,29 +74,24 @@ public class AllOrdersListParser {
             //定义InputStream 输入流来读取URL的响应
             InputStream is = conn.getInputStream();
 
-            mOrdersList = parse(is);
+            mApplysMoreInfoList = parse(is);
 
         } catch (Exception e) {
 
             e.printStackTrace();
-            mOrdersList = new ArrayList<>();
+            mApplysMoreInfoList = new ArrayList<>();
         }
 
-        //添加一点 车市数据
-        mOrdersList.add(new OrderInfo("id", "dd", "na"));
-
-        return mOrdersList;
+        return mApplysMoreInfoList;
     }
 
-    //解析  xml数据
-    private List<OrderInfo> parse(InputStream is) throws XmlPullParserException, IOException {
+    private List<ApplyMoreInfoListItem> parse(InputStream is)throws XmlPullParserException, IOException {
 
-        List<OrderInfo> mOrdersList = new ArrayList<>();
+        List<ApplyMoreInfoListItem> mApplysMoreInfoList = new ArrayList<>();
 
         try {
 
             XmlPullParser parser = Xml.newPullParser();
-
             parser.setInput(is, "utf-8");
 
             //首先跳出 ArrayOfString
@@ -106,7 +100,11 @@ public class AllOrdersListParser {
             int i = 0;
 
             //引用
-            String PRHSORD_ID = null, NAMEE = null, PRAC_NAME = null;
+            String MATE_Code=null;
+            String MATE_Name=null;
+            String MATE_Size=null;
+            String PRHSD_AMNT=null;
+            String MATE_PRICEP=null;
 
             while (eventType != XmlPullParser.END_DOCUMENT) {
 
@@ -120,25 +118,41 @@ public class AllOrdersListParser {
 
                             eventType = parser.next();
                             String str = parser.getText();
-                            switch (i % 3) {
+                            switch (i % 10) {
 
                                 case 0:
-                                    PRHSORD_ID = str;
+                                    MATE_Code = str;
 
-                                    if (PRHSORD_ID == null) PRHSORD_ID = "";
+                                    if (MATE_Code == null) MATE_Code = "";
                                     break;
                                 case 1:
-                                    NAMEE = str;
+                                    MATE_Name = str;
 
-                                    if (NAMEE == null) NAMEE = "";
+                                    if (MATE_Name == null) MATE_Name = "";
                                     break;
                                 case 2:
-                                    PRAC_NAME = str;
+                                    MATE_Size = str;
 
-                                    if (PRAC_NAME == null) PRAC_NAME = "";
-                                    //添加到  mOrdersList
-                                    mOrdersList.add(new OrderInfo(PRHSORD_ID, NAMEE, PRAC_NAME));
+                                    if (MATE_Size == null) MATE_Size = "";
                                     break;
+                                case 3:
+                                    PRHSD_AMNT = str;
+
+                                    if (PRHSD_AMNT == null) PRHSD_AMNT = "";
+                                    break;
+                                case 4:
+                                    MATE_PRICEP = str;
+
+                                    if (MATE_PRICEP == null) MATE_PRICEP = "";
+
+                                    //将这个OrdersMoreInfoListItem 添加到List
+                                    mApplysMoreInfoList.add(new ApplyMoreInfoListItem(MATE_Code
+                                            , MATE_Name
+                                            , MATE_Size
+                                            , PRHSD_AMNT
+                                            , MATE_PRICEP));
+                                    break;
+
                             }
 
                             //别忘了  ++
@@ -153,6 +167,7 @@ public class AllOrdersListParser {
 
             is.close();
         }
-        return mOrdersList;
+
+        return mApplysMoreInfoList;
     }
 }

@@ -27,10 +27,10 @@
     <string name="action_settings">设置</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_primary_page">主页</string>
-    <string name="action_all_orders">所有订单</string>
-    <string name="action_all_applys">所有申请单</string>
-    <string name="action_mine_orders">我的订单</string>
-    <string name="action_mine_applys">我的申请单</string>
+    <string name="action_all_orders">已审订单</string>
+    <string name="action_all_applys">已审申请单</string>
+    <string name="action_mine_orders">待审订单</string>
+    <string name="action_mine_applys">待审申请单</string>
 
     <string name="cube_ptr_pull_down">下拉</string>
     <string name="cube_ptr_pull_down_to_refresh">下拉刷新</string>
@@ -59,4 +59,31 @@
 
     <string name="popup_all_orders_delete">删除</string>
     <string name="popup_all_orders_add">添加</string>
+
+    <string name="service_float_larger_title">基本情况</string>
+
+    <string name="popupwindow_stand_info">基本信息</string>
+    <string name="popupwindow_time_info">时间信息</string>
+    <string name="popupwindow_progress_info">完成情况</string>
+    <string name="popupwindow_slection_state">审批</string>
+
+    <!--订单详细信息-->
+    <string name="order_more_info_list_item_MATE_Code">MATE_Code:</string>
+    <string name="order_more_info_list_item_MATE_Name">MATE_Name:</string>
+    <string name="order_more_info_list_item_MUNITU_NAME">MUNITU_NAME:</string>
+    <string name="order_more_info_list_item_MATE_Size">MATE_Size:</string>
+    <string name="order_more_info_list_item_MATE_Model">MATE_Model:</string>
+    <string name="order_more_info_list_item_PRHSOD_AMNT">PRHSOD_AMNT:</string>
+    <string name="order_more_info_list_item_PRHSOD_ACCEIN">PRHSOD_ACCEIN:</string>
+    <string name="order_more_info_list_item_PRHSOD_BILLIN">PRHSOD_BILLIN:</string>
+    <string name="order_more_info_list_item_PRHSOD_AMNT_RTN">PRHSOD_AMNT_RTN:</string>
+    <string name="order_more_info_list_item_MATE_PRICEP">MATE_PRICEP:</string>
+
+    <!--申请单详细信息-->
+    <string name="apply_more_info_list_item_MATE_Code">MATE_Code</string>
+    <string name="apply_more_info_list_item_MATE_Name">MATE_Name</string>
+    <string name="apply_more_info_list_item_MATE_Size">MATE_Size</string>
+    <string name="apply_more_info_list_item_PRHSD_AMNT">PRHSD_AMNT</string>
+    <string name="apply_more_info_list_item_MATE_PRICEP">MATE_PRICEP</string>
+
 </resources>
