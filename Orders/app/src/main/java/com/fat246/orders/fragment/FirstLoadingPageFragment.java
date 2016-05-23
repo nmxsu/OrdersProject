@@ -10,17 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.fat246.orders.R;
 import com.fat246.orders.activity.LoginPage;
-import com.fat246.orders.activity.MainPage;
-import com.fat246.orders.bean.UserInfo;
 import com.fat246.orders.widget.CI.CircleIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class FirstLoadingPageFragment extends Fragment {
 
@@ -28,7 +25,6 @@ public class FirstLoadingPageFragment extends Fragment {
     private ViewPager mViewPager;
     private CircleIndicator mCircleIndicator;
     private Button mNowLogIn;
-    private TextView mComeIndirectly;
 
     private List<View> mViewList;
 
@@ -55,19 +51,30 @@ public class FirstLoadingPageFragment extends Fragment {
         mViewPager = (ViewPager) rootView.findViewById(R.id.mViewPager);
         mCircleIndicator = (CircleIndicator) rootView.findViewById(R.id.mCircleIndicator);
         mNowLogIn = (Button) rootView.findViewById(R.id.now_login);
-        mComeIndirectly = (TextView) rootView.findViewById(R.id.come_in_directly);
     }
 
     public void setFirstData() {
 
         mViewList = new ArrayList<>();
-        Random random = new Random();
+
+        ImageView[] mImages = new ImageView[5];
 
         for (int i = 0; i < 5; i++) {
 
-            View mView = new View(getActivity());
-            mView.setBackgroundColor(0xff000000 | random.nextInt(0x00ffffff));
-            mViewList.add(mView);
+            mImages[i] = new ImageView(getActivity());
+
+            mImages[i].setScaleType(ImageView.ScaleType.FIT_XY);
+        }
+
+        mImages[0].setImageResource(R.drawable.pic1);
+        mImages[1].setImageResource(R.drawable.pic2);
+        mImages[2].setImageResource(R.drawable.pic3);
+        mImages[3].setImageResource(R.drawable.pic4);
+        mImages[4].setImageResource(R.drawable.pic5);
+
+        for (int i = 0; i < 5; i++) {
+
+            mViewList.add(mImages[i]);
         }
     }
 
@@ -91,21 +98,6 @@ public class FirstLoadingPageFragment extends Fragment {
             }
         });
 
-        mComeIndirectly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent mIntent = new Intent(getActivity(), MainPage.class);
-
-                UserInfo.setData(mIntent);
-
-                startActivity(mIntent);
-
-                //动画
-
-                getActivity().finish();
-            }
-        });
 
     }
 

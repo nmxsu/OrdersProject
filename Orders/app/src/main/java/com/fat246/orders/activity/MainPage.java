@@ -2,6 +2,7 @@ package com.fat246.orders.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fat246.orders.R;
+import com.fat246.orders.application.MyApplication;
 import com.fat246.orders.bean.UserInfo;
 import com.fat246.orders.fragment.AllApplysFragment;
 import com.fat246.orders.fragment.AllOrdersFragment;
@@ -33,7 +35,6 @@ public class MainPage extends AppCompatActivity
 
     //View
     private ChangeTabWithColorView[] mAction = new ChangeTabWithColorView[4];
-
 
     //用户用户信息
     private UserInfo mUserInfo;
@@ -153,9 +154,9 @@ public class MainPage extends AppCompatActivity
         mDrawerLayou.setDrawerListener(toggle);
         toggle.syncState();
 
+        nav_view.setNavigationItemSelectedListener(this);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        setHeader();
 
         /*      这里有待调试
         //设置用户名
@@ -163,6 +164,37 @@ public class MainPage extends AppCompatActivity
         mUserName=(TextView)headerView.findViewById(R.id.drawer_user_name);
         mUserName.append(mUserInfo.getmUser());
         */
+    }
+
+    private void setHeader() {
+
+        View mHeader = nav_view.getHeaderView(0);
+
+        //用户名
+        TextView mText = (TextView) mHeader.findViewById(R.id.drawer_user_name);
+
+        mText.setText(mUserInfo.getmUser());
+
+        //注销
+        TextView mCancle = (TextView) mHeader.findViewById(R.id.nav_cancle);
+
+        mCancle.setVisibility(View.VISIBLE);
+
+        mCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent mIntent = new Intent(MainPage.this, LoginPage.class);
+
+                mUserInfo.operationValue=99;
+                //保存登陆信息到  Preferences
+                ((MyApplication)getApplication()).setUserInfo(mUserInfo);
+
+                startActivity(mIntent);
+
+                MainPage.this.finish();
+            }
+        });
     }
 
     @Override
@@ -329,10 +361,10 @@ public class MainPage extends AppCompatActivity
 
             Fragment rootFragment = null;
 
-            if (position%2==0){
-                rootFragment=new AllOrdersFragment();
-            }else {
-                rootFragment=new AllApplysFragment();
+            if (position % 2 == 0) {
+                rootFragment = new AllOrdersFragment();
+            } else {
+                rootFragment = new AllApplysFragment();
             }
 
             rootFragment.setArguments(mUserInfo.getBundle());

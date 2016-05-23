@@ -140,7 +140,6 @@ public class ManageFloatSmallView {
                 }
             }
         });
-
     }
 
     public UserInfo getUserInfo() {

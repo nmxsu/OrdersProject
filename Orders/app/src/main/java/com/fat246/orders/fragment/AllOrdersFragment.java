@@ -20,6 +20,11 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.fat246.orders.R;
 import com.fat246.orders.activity.MoreInfo;
 import com.fat246.orders.application.MyApplication;
@@ -32,9 +37,14 @@ import com.fat246.orders.widget.Ptr.PtrFrameLayout;
 import com.fat246.orders.widget.Ptr.PtrHandler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AllOrdersFragment extends Fragment {
+
+    //地址
+    private static final String SET_ORDER_APPROVAL = "http://192.168.56.1:8080//Service1.asmx//setOrderApproval";
 
     //订单的地址
     private String ALLORDERSLIST_URL;
@@ -51,7 +61,8 @@ public class AllOrdersFragment extends Fragment {
     //用户信息
     private UserInfo mUserInfo;
 
-    public AllOrdersFragment() {}
+    public AllOrdersFragment() {
+    }
 
     @Nullable
     @Override
@@ -60,10 +71,10 @@ public class AllOrdersFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_all_orders, container, false);
 
         //得到订单的网络地址
-        this.ALLORDERSLIST_URL=MyApplication.getAllorderslistUrl();
+        this.ALLORDERSLIST_URL = MyApplication.getAllorderslistUrl();
 
         //得到用户信息
-        mUserInfo=getUserInfo();
+        mUserInfo = getUserInfo();
 
         //设置List
         setList(rootView);
@@ -75,7 +86,7 @@ public class AllOrdersFragment extends Fragment {
     }
 
     //获取用户信息
-    private UserInfo getUserInfo(){
+    private UserInfo getUserInfo() {
 
         return UserInfo.getData(getActivity());
     }
@@ -158,17 +169,17 @@ public class AllOrdersFragment extends Fragment {
         });
     }
 
-    private void showPopupWindow(View v){
+    private void showPopupWindow(View v) {
 
         //首先出事话内容
-        View contentView=LayoutInflater.from(getActivity())
-                .inflate(R.layout.popupwindow_layout,null);
+        View contentView = LayoutInflater.from(getActivity())
+                .inflate(R.layout.popupwindow_layout, null);
 
-        final PopupWindow mPop=new PopupWindow(contentView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,true);
+        final PopupWindow mPop = new PopupWindow(contentView,
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
 
         //设置监听事件
-        setLisenler(contentView);
+        setLisenler(contentView, v);
 
         mPop.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
 
@@ -176,21 +187,21 @@ public class AllOrdersFragment extends Fragment {
 
         //为了使其显示在上方
 
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-            mPop.showAsDropDown(v,25,-v.getHeight(),Gravity.CENTER);
-        }else {
-            mPop.showAsDropDown(v,25,-v.getHeight());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mPop.showAsDropDown(v, 25, -v.getHeight(), Gravity.CENTER);
+        } else {
+            mPop.showAsDropDown(v, 25, -v.getHeight());
         }
     }
 
     //设置popupwindow　的监听事件
-    private void setLisenler(View contentView){
+    private void setLisenler(View contentView, final View item) {
 
         //四个按钮
-        Button standInfo=(Button)contentView.findViewById(R.id.popupwindow_stand_info);
-        Button timeInfo=(Button)contentView.findViewById(R.id.popupwindow_time_info);
-        Button progressInfo=(Button)contentView.findViewById(R.id.popupwindow_progress_info);
-        Button slectionState=(Button)contentView.findViewById(R.id.popupwindow_slection_state);
+        Button standInfo = (Button) contentView.findViewById(R.id.popupwindow_stand_info);
+        Button timeInfo = (Button) contentView.findViewById(R.id.popupwindow_time_info);
+        Button progressInfo = (Button) contentView.findViewById(R.id.popupwindow_progress_info);
+        Button slectionState = (Button) contentView.findViewById(R.id.popupwindow_slection_state);
 
         standInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,6 +228,11 @@ public class AllOrdersFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                TextView mID = (TextView) item.findViewById(R.id.all_orders_prhsord_id);
+
+                setOrderApprovalRequest(mID.getText().toString().trim());
+
+                Log.e("here", "comes");
             }
         });
     }
@@ -235,7 +251,7 @@ public class AllOrdersFragment extends Fragment {
             public void onRefreshBegin(PtrFrameLayout frame) {
 
                 //异步刷新加载数据
-                new AllOrdersAsyncTask(frame,ALLORDERSLIST_URL).execute(mUserInfo);
+                new AllOrdersAsyncTask(frame, ALLORDERSLIST_URL).execute(mUserInfo);
             }
         });
 
@@ -261,17 +277,17 @@ public class AllOrdersFragment extends Fragment {
 
         private String URL_Str;
 
-        public AllOrdersAsyncTask(PtrFrameLayout frame,String URL_Str) {
+        public AllOrdersAsyncTask(PtrFrameLayout frame, String URL_Str) {
 
             this.frame = frame;
-            this.URL_Str=URL_Str;
+            this.URL_Str = URL_Str;
         }
 
         @Override
         protected List<OrderInfo> doInBackground(UserInfo... params) {
 
             //通过AllOrdersListParser 对象  解析 xml 数据
-            return new AllOrdersListParser(params[0],URL_Str).getAllOrdersList();
+            return new AllOrdersListParser(params[0], URL_Str).getAllOrdersList();
         }
 
         @Override
@@ -281,5 +297,39 @@ public class AllOrdersFragment extends Fragment {
 
             frame.refreshComplete();
         }
+    }
+
+    //设置  订单审批
+    private void setOrderApprovalRequest(final String OrderId) {
+
+        StringRequest mRequest = new StringRequest(Request.Method.POST, SET_ORDER_APPROVAL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+
+                Log.e("result", s);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+                Log.e("error", volleyError.toString());
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> map = new HashMap<>();
+
+                map.put("authName", mUserInfo.getmUser());
+
+                map.put("OrderId", OrderId);
+                return map;
+            }
+        };
+
+        mRequest.setTag("setOrderApprovalRequest");
+
+        MyApplication.getQueue().add(mRequest);
     }
 }

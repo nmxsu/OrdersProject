@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.fat246.orders.bean.UserInfo;
 
 public class MyApplication extends Application {
@@ -13,6 +15,10 @@ public class MyApplication extends Application {
     private static final String SERVER_PORT = "8080";
     private static final String SERVER_NAME = "Service1.asmx";
     private static final String PRE_URL = "http://" + SERVER_IP + ":" + SERVER_PORT + "//" + SERVER_NAME;
+
+
+    //请求队列
+    private static RequestQueue Queue;
 
     //订单地址
     private static final String ALLORDERSLIST_SERVER = "getAllOrderList";
@@ -46,6 +52,9 @@ public class MyApplication extends Application {
 
         //首先从配置文件中获取用户信息
         setUserInfo();
+
+        //初始化请求队列
+        Queue = Volley.newRequestQueue(getApplicationContext());
     }
 
     //通过配置文件获取用户的信息
@@ -118,5 +127,10 @@ public class MyApplication extends Application {
     //返回官方网址
     public static String getOfficialWebsite() {
         return OFFICIAL_WEBSITE;
+    }
+
+    //get
+    public static RequestQueue getQueue() {
+        return Queue;
     }
 }
