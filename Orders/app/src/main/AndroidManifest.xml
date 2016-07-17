@@ -7,12 +7,16 @@
 
     <!--网络权限-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- 获取 CompatModeWrapper 的权限 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <!--读写文件的权限-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".application.MyApplication"
@@ -28,8 +32,8 @@
         <activity
             android:name=".activity.MainPage"
             android:label="@string/title_activity_main_page"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.MoreInfo"
             android:label="@string/title_activity_more_info"
@@ -41,8 +45,8 @@
         </activity>
         <activity
             android:name=".activity.LoadingPage"
-            android:theme="@style/NotitleTheme"
-            android:launchMode="singleInstance">
+            android:launchMode="singleInstance"
+            android:theme="@style/NotitleTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,7 +57,7 @@
         <service
             android:name=".services.MyService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
     </application>
 
 </manifest>
