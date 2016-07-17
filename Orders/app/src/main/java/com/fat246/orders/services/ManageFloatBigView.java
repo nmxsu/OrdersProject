@@ -398,12 +398,12 @@ public class ManageFloatBigView {
             if (isOrdersData) {
 
                 //通过AllOrdersListParser 对象  解析 xml 数据
-                mData = new AllOrdersListParser(mUserInfo, ALLORDERSLIST_URL).getAllOrdersList();
+                mData = new AllOrdersListParser(true, ALLORDERSLIST_URL).getAllOrdersList();
 
             } else {
 
                 //下载并解析
-                mData = new AllApplyListParser(mUserInfo, ALLAPPLYSLIST_URL).getAllApplyList();
+                mData = new AllApplyListParser(true, ALLAPPLYSLIST_URL).getAllApplyList();
             }
 
             //Toast.makeText(mContext, "" + mData.size(), Toast.LENGTH_LONG).show();
