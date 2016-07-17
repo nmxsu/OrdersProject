@@ -302,8 +302,10 @@ public class MainPage extends AppCompatActivity
 
     //点击了  drawer 设置事件
     public void doSetting() {
-        Toast.makeText(this, "墨迹墨迹。。。", Toast.LENGTH_SHORT).show();
 
+        Intent mIntent = new Intent(MainPage.this, SettingActivity.class);
+
+        startActivity(mIntent);
     }
 
     //点击了 drawer 分享事件
