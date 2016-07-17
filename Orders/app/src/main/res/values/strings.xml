@@ -53,6 +53,7 @@
     <string name="nav_share_name">分享</string>
     <string name="nav_send_name">发送</string>
     <string name="nav_setting_name">设置</string>
+    <string name="nav_update_name">检查更新</string>
     <string name="nav_group_share_name">分享到</string>
     <string name="main_menu_search_name">搜索</string>
     <string name="main_menu_search_hint">订单/申请单</string>
