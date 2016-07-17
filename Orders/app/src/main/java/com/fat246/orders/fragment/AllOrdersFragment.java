@@ -61,7 +61,34 @@ public class AllOrdersFragment extends Fragment {
     //用户信息
     private UserInfo mUserInfo;
 
+    //是否通过评审
+    private boolean isLoadPassed;
+    private static final String IS_LOAD_PASSED = "is_load_passed";
+
     public AllOrdersFragment() {
+    }
+
+    public static AllOrdersFragment newInstance(boolean isLoadPassed) {
+
+        AllOrdersFragment allOrdersFragment = new AllOrdersFragment();
+
+        Bundle bundle = new Bundle();
+
+        bundle.putBoolean(IS_LOAD_PASSED, isLoadPassed);
+
+        allOrdersFragment.setArguments(bundle);
+
+        return allOrdersFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+
+            isLoadPassed = getArguments().getBoolean(IS_LOAD_PASSED);
+        }
     }
 
     @Nullable
@@ -287,7 +314,7 @@ public class AllOrdersFragment extends Fragment {
         protected List<OrderInfo> doInBackground(UserInfo... params) {
 
             //通过AllOrdersListParser 对象  解析 xml 数据
-            return new AllOrdersListParser(params[0], URL_Str).getAllOrdersList();
+            return new AllOrdersListParser(isLoadPassed, URL_Str).getAllOrdersList();
         }
 
         @Override

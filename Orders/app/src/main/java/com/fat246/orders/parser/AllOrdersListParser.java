@@ -1,10 +1,8 @@
 package com.fat246.orders.parser;
 
-import android.util.Log;
 import android.util.Xml;
 
 import com.fat246.orders.bean.OrderInfo;
-import com.fat246.orders.bean.UserInfo;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -22,20 +20,19 @@ public class AllOrdersListParser {
     //URL str
     private String URL_Str;
 
-    //UserInfo
-    private UserInfo mUserInfo;
+    //是否通过评审
+    private boolean isLoadPassed;
 
-    public AllOrdersListParser(UserInfo mUserInfo, String URL_Str) {
+    public AllOrdersListParser(boolean isLoadPassed, String URL_Str) {
 
-        this.mUserInfo = mUserInfo;
-
+        this.isLoadPassed = isLoadPassed;
         this.URL_Str = URL_Str;
     }
 
     public List<OrderInfo> getAllOrdersList() {
 
         //保存中网页服务上面加载下来的  xml数据
-        List<OrderInfo> mOrdersList = sendGetAllOrdersListPost("autId=" + mUserInfo.getmUser());
+        List<OrderInfo> mOrdersList = sendGetAllOrdersListPost("autId=" + (isLoadPassed ? 4 : 0) + "&startRow=1&endRow=20");
 
         return mOrdersList;
     }
@@ -84,7 +81,7 @@ public class AllOrdersListParser {
         }
 
         //添加一点 车市数据
-        mOrdersList.add(new OrderInfo("id", "dd", "na"));
+        mOrdersList.add(new OrderInfo("id", "dd", "na", false));
 
         return mOrdersList;
     }
@@ -106,7 +103,7 @@ public class AllOrdersListParser {
             int i = 0;
 
             //引用
-            String PRHSORD_ID = null, NAMEE = null, PRAC_NAME = null;
+            String PRHSORD_ID = null, NAMEE = null, PRAC_NAME = null, IS_LOAD_PASSED_STR = null;
 
             while (eventType != XmlPullParser.END_DOCUMENT) {
 
@@ -120,7 +117,7 @@ public class AllOrdersListParser {
 
                             eventType = parser.next();
                             String str = parser.getText();
-                            switch (i % 3) {
+                            switch (i % 4) {
 
                                 case 0:
                                     PRHSORD_ID = str;
@@ -136,8 +133,16 @@ public class AllOrdersListParser {
                                     PRAC_NAME = str;
 
                                     if (PRAC_NAME == null) PRAC_NAME = "";
+                                    break;
+
+                                case 3:
+
+                                    IS_LOAD_PASSED_STR = str;
+
+                                    if (IS_LOAD_PASSED_STR == null) IS_LOAD_PASSED_STR = "";
+
                                     //添加到  mOrdersList
-                                    mOrdersList.add(new OrderInfo(PRHSORD_ID, NAMEE, PRAC_NAME));
+                                    mOrdersList.add(new OrderInfo(PRHSORD_ID, NAMEE, PRAC_NAME, IS_LOAD_PASSED_STR.equals("4")));
                                     break;
                             }
 
