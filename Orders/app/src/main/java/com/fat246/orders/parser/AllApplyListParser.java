@@ -4,8 +4,6 @@ import android.util.Log;
 import android.util.Xml;
 
 import com.fat246.orders.bean.ApplyInfo;
-import com.fat246.orders.bean.OrderInfo;
-import com.fat246.orders.bean.UserInfo;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -26,12 +24,11 @@ public class AllApplyListParser {
     //URL str
     private String URL_Str;
 
-    //用户信息
-    private UserInfo mUserInfo;
+    private boolean isLoadPassed;
 
-    public AllApplyListParser(UserInfo mUserInfo, String URL_Str) {
+    public AllApplyListParser(boolean isLoadPassed, String URL_Str) {
 
-        this.mUserInfo = mUserInfo;
+        this.isLoadPassed = isLoadPassed;
         this.URL_Str = URL_Str;
 
     }
@@ -40,7 +37,7 @@ public class AllApplyListParser {
     public List<ApplyInfo> getAllApplyList() {
 
         //保存重网页上面下载 下来的 xml数据
-        List<ApplyInfo> mApplyList = sendGetAllApplyListPost("autId=" + mUserInfo.getmUser());
+        List<ApplyInfo> mApplyList = sendGetAllApplyListPost("autId=" + (isLoadPassed ? 0 : 4) + "&startRow=1&endRow=20");
 
         return mApplyList;
     }
@@ -92,7 +89,7 @@ public class AllApplyListParser {
         return mApplyList;
     }
 
-    private List<ApplyInfo> parse(InputStream is) throws XmlPullParserException,IOException{
+    private List<ApplyInfo> parse(InputStream is) throws XmlPullParserException, IOException {
 
         List<ApplyInfo> mApplyList = new ArrayList<>();
 
@@ -108,7 +105,7 @@ public class AllApplyListParser {
             int i = 0;
 
             //引用
-            String PRHS_ID = null, DEP_NAME = null, PSD_NAME = null,PSR_NAME=null;
+            String PRHS_ID = null, DEP_NAME = null, PSD_NAME = null, PSR_NAME = null, IS_PASSED_STR = null;
 
             while (eventType != XmlPullParser.END_DOCUMENT) {
 
@@ -122,32 +119,41 @@ public class AllApplyListParser {
 
                             eventType = parser.next();
                             String str = parser.getText();
-                            Log.e("here","comes---"+str);
-                            switch (i % 3) {
+                            Log.e("here", "comes---" + str);
+                            switch (i % 4) {
 
                                 case 0:
                                     PRHS_ID = str;
 
-                                    if (PRHS_ID==null) PRHS_ID="";
+                                    if (PRHS_ID == null) PRHS_ID = "";
                                     break;
                                 case 1:
                                     DEP_NAME = str;
 
-                                    if (DEP_NAME==null) DEP_NAME="";
+                                    if (DEP_NAME == null) DEP_NAME = "";
                                     break;
 
                                 case 2:
-                                    PSD_NAME=str;
-                                    if (PSD_NAME==null) PSD_NAME="";
+                                    PSD_NAME = str;
+                                    if (PSD_NAME == null) PSD_NAME = "";
                                     break;
 
                                 case 3:
                                     PSR_NAME = str;
 
-                                    if (PSR_NAME==null) PSR_NAME="";
+                                    if (PSR_NAME == null) PSR_NAME = "";
+                                    break;
+
+                                case 4:
+
+                                    IS_PASSED_STR = str;
+
+                                    if (IS_PASSED_STR == null) IS_PASSED_STR = "";
+
                                     //添加到  mOrdersList
                                     Log.e("++add", "add to list");
-                                    mApplyList.add(new ApplyInfo(PRHS_ID, DEP_NAME, PSD_NAME,PSR_NAME));
+                                    mApplyList.add(new ApplyInfo(PRHS_ID, DEP_NAME, PSD_NAME, PSR_NAME,IS_PASSED_STR.equals("4")));
+
                                     break;
                             }
 

@@ -47,7 +47,34 @@ public class AllApplysFragment extends Fragment {
     //用户数据
     private UserInfo mUserInfo;
 
+    //当前实例需要加载的是审批的
+    private boolean isLoadPassed;
+    private static final String IS_LOAD_PASSED = "is_load_passed";
+
     public AllApplysFragment() {
+    }
+
+    public static AllApplysFragment newInstance(boolean isLoadPassed) {
+
+        AllApplysFragment allApplysFragment = new AllApplysFragment();
+
+        Bundle bundle = new Bundle();
+
+        bundle.putBoolean(IS_LOAD_PASSED, isLoadPassed);
+
+        allApplysFragment.setArguments(bundle);
+
+        return allApplysFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+
+            isLoadPassed = getArguments().getBoolean(IS_LOAD_PASSED);
+        }
     }
 
     @Nullable
@@ -60,7 +87,7 @@ public class AllApplysFragment extends Fragment {
         mUserInfo = getUserInfo();
 
         //得到申请单的网络地址
-        ALLORDERSLIST_URL=MyApplication.getAllapplyslistUrl();
+        ALLORDERSLIST_URL = MyApplication.getAllapplyslistUrl();
 
         //设置List
         setList(rootView);
@@ -155,7 +182,7 @@ public class AllApplysFragment extends Fragment {
             public void onRefreshBegin(PtrFrameLayout frame) {
 
                 //异步刷新加载数据
-                new AllApplysAsyncTask(frame,ALLORDERSLIST_URL).execute(mUserInfo);
+                new AllApplysAsyncTask(frame, ALLORDERSLIST_URL).execute(mUserInfo);
             }
         });
 
@@ -183,17 +210,17 @@ public class AllApplysFragment extends Fragment {
         //URL
         private String URL_Str;
 
-        public AllApplysAsyncTask(PtrFrameLayout frame,String URL_Str) {
+        public AllApplysAsyncTask(PtrFrameLayout frame, String URL_Str) {
 
             this.frame = frame;
-            this.URL_Str=URL_Str;
+            this.URL_Str = URL_Str;
         }
 
         @Override
         protected List<ApplyInfo> doInBackground(UserInfo... params) {
 
             //下载并解析
-            return new AllApplyListParser(params[0],URL_Str).getAllApplyList();
+            return new AllApplyListParser(isLoadPassed, URL_Str).getAllApplyList();
         }
 
         @Override
