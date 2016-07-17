@@ -59,7 +59,9 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".activity.SettingActivity"></activity>
+        <activity
+            android:name=".activity.SettingActivity"
+            android:parentActivityName=".activity.MainPage"></activity>
     </application>
 
 </manifest>
