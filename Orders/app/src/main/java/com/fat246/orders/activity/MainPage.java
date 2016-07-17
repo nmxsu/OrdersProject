@@ -370,6 +370,8 @@ public class MainPage extends AppCompatActivity
     //重写FragmentPagerAdapter类
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        public Fragment[] fragments = new Fragment[4];
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -377,17 +379,32 @@ public class MainPage extends AppCompatActivity
         @Override
         public Fragment getItem(int position) {
 
-            Fragment rootFragment = null;
+            if (fragments[position] == null) {
 
-            if (position % 2 == 0) {
-                rootFragment = new AllOrdersFragment();
-            } else {
-                rootFragment = new AllApplysFragment();
+                switch (position) {
+
+                    case 0:
+
+                        fragments[position] = AllOrdersFragment.newInstance(true);
+                        break;
+
+                    case 1:
+
+                        fragments[position] = AllApplysFragment.newInstance(true);
+                        break;
+
+                    case 2:
+
+                        fragments[position] = AllOrdersFragment.newInstance(false);
+                        break;
+                    case 3:
+
+                        fragments[position] = AllApplysFragment.newInstance(false);
+                        break;
+                }
             }
 
-            rootFragment.setArguments(mUserInfo.getBundle());
-
-            return rootFragment;
+            return fragments[position];
         }
 
         @Override
