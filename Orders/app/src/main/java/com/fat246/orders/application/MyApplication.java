@@ -3,6 +3,7 @@ package com.fat246.orders.application;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -43,6 +44,9 @@ public class MyApplication extends Application {
     //官方网站
     private static final String OFFICIAL_WEBSITE = "http://www.fat246.com";
 
+    //保存路经
+    public static String SAVE_PATH;
+
     //保存用户信息
     private UserInfo mUserInfo;
 
@@ -55,6 +59,9 @@ public class MyApplication extends Application {
 
         //初始化请求队列
         Queue = Volley.newRequestQueue(getApplicationContext());
+
+        //获得路经
+        MyApplication.SAVE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
     }
 
     //通过配置文件获取用户的信息

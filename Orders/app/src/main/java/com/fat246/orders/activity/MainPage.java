@@ -25,10 +25,11 @@ import com.fat246.orders.application.MyApplication;
 import com.fat246.orders.bean.UserInfo;
 import com.fat246.orders.fragment.AllApplysFragment;
 import com.fat246.orders.fragment.AllOrdersFragment;
+import com.fat246.orders.manager.AutoUpdateManager;
 import com.fat246.orders.widget.ChangeTabWithColorView;
 
 public class MainPage extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, AutoUpdateManager.AfterUpdate {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -186,9 +187,9 @@ public class MainPage extends AppCompatActivity
 
                 Intent mIntent = new Intent(MainPage.this, LoginPage.class);
 
-                mUserInfo.operationValue=99;
+                mUserInfo.operationValue = 99;
                 //保存登陆信息到  Preferences
-                ((MyApplication)getApplication()).setUserInfo(mUserInfo);
+                ((MyApplication) getApplication()).setUserInfo(mUserInfo);
 
                 startActivity(mIntent);
 
@@ -287,6 +288,11 @@ public class MainPage extends AppCompatActivity
                 doSend();
                 break;
 
+            case R.id.nav_update:
+
+                //点击了检查更新事件
+                doUpdate();
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -310,6 +316,16 @@ public class MainPage extends AppCompatActivity
     public void doSend() {
         Toast.makeText(this, "墨迹墨迹。。。", Toast.LENGTH_SHORT).show();
 
+    }
+
+    //doUpdate
+    public void doUpdate() {
+
+        Toast.makeText(this, "开始检查更新。。。", Toast.LENGTH_SHORT).show();
+
+        AutoUpdateManager autoUpdateManager = new AutoUpdateManager(this);
+
+        autoUpdateManager.beginUpdate(this);
     }
 
     //重置其他Tab
@@ -379,5 +395,8 @@ public class MainPage extends AppCompatActivity
         }
     }
 
+    @Override
+    public void toDoAfterUpdate() {
 
+    }
 }
