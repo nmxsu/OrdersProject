@@ -61,7 +61,15 @@
 
         <activity
             android:name=".activity.SettingActivity"
-            android:parentActivityName=".activity.MainPage"></activity>
+            android:parentActivityName=".activity.MainPage" />
+        <activity
+            android:name=".activity.OrderStandInfoActivity"
+            android:parentActivityName=".activity.MainPage"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fat246.orders.activity.MainPage" />
+        </activity>
     </application>
 
 </manifest>
