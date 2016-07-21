@@ -2,6 +2,9 @@ package com.fat246.orders.bean;
 
 public class OrderInfo {
 
+    public static final String prhsord_id = "prhsord_id";
+    public static final String is_passed = "is_passed";
+
     //订单ID
     private String PRHSORD_ID;
 
