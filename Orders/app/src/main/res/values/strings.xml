@@ -86,5 +86,13 @@
     <string name="apply_more_info_list_item_MATE_Size">MATE_Size</string>
     <string name="apply_more_info_list_item_PRHSD_AMNT">PRHSD_AMNT</string>
     <string name="apply_more_info_list_item_MATE_PRICEP">MATE_PRICEP</string>
+    <string name="title_activity_order_stand_info">OrderStandInfoActivity</string>
+
+    <!--订单基本信息-->
+    <string name="provider">供应商</string>
+    <string name="complete_status">完成情况</string>
+    <string name="owner">所有者</string>
+    <string name="maintain">维护者</string>
+    <string name="judge">审批人</string>
 
 </resources>
