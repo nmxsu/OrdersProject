@@ -41,6 +41,10 @@ public class MyApplication extends Application {
     private static final String LOGIN_SERVER = "isLogin";
     private static final String LOGIN_URL = PRE_URL + "//" + LOGIN_SERVER;
 
+    //订单基本信息地址
+    private static final String ORDER_STAND_INFO = "orderstandinfo";
+    private static final String ORDER_STAND_INFO_URL = PRE_URL + "//" + ORDER_STAND_INFO;
+
     //官方网站
     private static final String OFFICIAL_WEBSITE = "http://www.fat246.com";
 
@@ -139,5 +143,10 @@ public class MyApplication extends Application {
     //get
     public static RequestQueue getQueue() {
         return Queue;
+    }
+
+    //返回订单基本信息地址
+    public static String getOrderStandInfoUrl() {
+        return ORDER_STAND_INFO_URL;
     }
 }
