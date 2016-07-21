@@ -27,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.fat246.orders.R;
 import com.fat246.orders.activity.MoreInfo;
+import com.fat246.orders.activity.OrderStandInfoActivity;
 import com.fat246.orders.application.MyApplication;
 import com.fat246.orders.bean.OrderInfo;
 import com.fat246.orders.bean.UserInfo;
@@ -188,7 +189,7 @@ public class AllOrdersFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                showPopupWindow(view);
+                showPopupWindow(view, position);
 
                 //不响应  点击事件
                 return true;
@@ -196,7 +197,7 @@ public class AllOrdersFragment extends Fragment {
         });
     }
 
-    private void showPopupWindow(View v) {
+    private void showPopupWindow(View v, int position) {
 
         //首先出事话内容
         View contentView = LayoutInflater.from(getActivity())
@@ -206,7 +207,7 @@ public class AllOrdersFragment extends Fragment {
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
 
         //设置监听事件
-        setLisenler(contentView, v);
+        setLisenler(contentView, v, mPop, position);
 
         mPop.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
 
@@ -222,7 +223,8 @@ public class AllOrdersFragment extends Fragment {
     }
 
     //设置popupwindow　的监听事件
-    private void setLisenler(View contentView, final View item) {
+    private void setLisenler(View contentView, final View item, final PopupWindow mPop,
+                             final int position) {
 
         //四个按钮
         Button standInfo = (Button) contentView.findViewById(R.id.popupwindow_stand_info);
@@ -234,6 +236,22 @@ public class AllOrdersFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+
+                Intent mIntent = new Intent(AllOrdersFragment.this.getContext(), OrderStandInfoActivity.class);
+
+                Bundle bundle = new Bundle();
+
+                OrderInfo orderInfo = mList.get(position);
+
+                bundle.putString(OrderInfo.prhsord_id, orderInfo.getPRHSORD_ID());
+
+                bundle.putBoolean(OrderInfo.is_passed, orderInfo.getIS_PASSED());
+
+                mIntent.putExtras(bundle);
+
+                startActivity(mIntent);
+
+                mPop.dismiss();
             }
         });
 
