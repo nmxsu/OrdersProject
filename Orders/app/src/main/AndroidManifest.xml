@@ -70,6 +70,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.fat246.orders.activity.MainPage" />
         </activity>
+        <activity android:name=".activity.OrderTimeInfo"></activity>
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import android.os.Environment;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.fat246.orders.bean.TimeInfo;
 import com.fat246.orders.bean.UserInfo;
 
 public class MyApplication extends Application {
@@ -16,6 +17,9 @@ public class MyApplication extends Application {
     private static final String SERVER_PORT = "8080";
     private static final String SERVER_NAME = "Service1.asmx";
     private static final String PRE_URL = "http://" + SERVER_IP + ":" + SERVER_PORT + "//" + SERVER_NAME;
+
+    //当前时间
+    private static final String NOW_Time="9:9";
 
 
     //请求队列
@@ -44,6 +48,10 @@ public class MyApplication extends Application {
     //订单基本信息地址
     private static final String ORDER_STAND_INFO = "orderstandinfo";
     private static final String ORDER_STAND_INFO_URL = PRE_URL + "//" + ORDER_STAND_INFO;
+
+    //时间基本信息
+    private static final String Time_Info="Time";
+    private static final String Time_Info_data=NOW_Time+ Time_Info;
 
     //官方网站
     private static final String OFFICIAL_WEBSITE = "http://www.fat246.com";
@@ -148,5 +156,9 @@ public class MyApplication extends Application {
     //返回订单基本信息地址
     public static String getOrderStandInfoUrl() {
         return ORDER_STAND_INFO_URL;
+    }
+
+    public static String getTimeInfo(){
+        return Time_Info_data;
     }
 }

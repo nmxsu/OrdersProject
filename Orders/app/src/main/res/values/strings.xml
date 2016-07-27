@@ -95,4 +95,12 @@
     <string name="maintain">维护者</string>
     <string name="judge">审批人</string>
 
+    <!--时间基本信息 -->
+    <string name="create">创建时间</string>
+    <string name="service">维护时间</string>
+    <string name="submit">提交时间</string>
+    <string name="approve">审批时间</string>
+    <string name="exit">终止时间</string>
+
+
 </resources>

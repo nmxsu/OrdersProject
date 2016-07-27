@@ -28,8 +28,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.fat246.orders.R;
 import com.fat246.orders.activity.MoreInfo;
 import com.fat246.orders.activity.OrderStandInfoActivity;
+
+import com.fat246.orders.activity.OrderTimeInfo;
 import com.fat246.orders.application.MyApplication;
 import com.fat246.orders.bean.OrderInfo;
+import com.fat246.orders.bean.TimeInfo;
 import com.fat246.orders.bean.UserInfo;
 import com.fat246.orders.parser.AllOrdersListParser;
 import com.fat246.orders.widget.Ptr.PtrClassicFrameLayout;
@@ -37,6 +40,7 @@ import com.fat246.orders.widget.Ptr.PtrDefaultHandler;
 import com.fat246.orders.widget.Ptr.PtrFrameLayout;
 import com.fat246.orders.widget.Ptr.PtrHandler;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -228,7 +232,7 @@ public class AllOrdersFragment extends Fragment {
 
         //四个按钮
         Button standInfo = (Button) contentView.findViewById(R.id.popupwindow_stand_info);
-        Button timeInfo = (Button) contentView.findViewById(R.id.popupwindow_time_info);
+        final Button timeInfo = (Button) contentView.findViewById(R.id.popupwindow_time_info);
         Button progressInfo = (Button) contentView.findViewById(R.id.popupwindow_progress_info);
         Button slectionState = (Button) contentView.findViewById(R.id.popupwindow_slection_state);
 
@@ -258,6 +262,20 @@ public class AllOrdersFragment extends Fragment {
         timeInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent tIntent=new Intent(AllOrdersFragment.this.getContext(), OrderTimeInfo.class);
+
+                Bundle bundle=new Bundle();
+                TimeInfo timeInfo1=new TimeInfo("1");
+
+                bundle.putString(TimeInfo.Time, timeInfo1.getDate());
+
+                tIntent.putExtras(bundle);
+
+                startActivity(tIntent);
+
+                mPop.dismiss();
+
+
 
             }
         });
